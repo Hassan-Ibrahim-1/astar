@@ -1,0 +1,115 @@
+#include "debug.hpp"
+#include "scene.hpp"
+#include "engine.hpp"
+#include "light.hpp"
+
+Scene::~Scene() {
+    clear_game_objects();
+}
+
+GameObject& Scene::create_game_object(Transform transform, Material material) {
+    auto obj = game_objects.emplace_back(new GameObject(transform, material));
+    obj->set_id(generate_id());
+    return *obj;
+}
+
+void Scene::add_game_object(GameObject* game_object) {
+    ASSERT(game_object != nullptr, "passing in game_object as a nullptr");
+    game_object->set_id(generate_id());
+    game_objects.emplace_back(game_object);
+}
+void Scene::add_primitive(Cube* cube) {
+    ASSERT(cube != nullptr, "passing in cube as a nullptr");
+    cube->meshes.back().set_vao(engine::get_renderer().cube_vao());
+    cube->set_id(generate_id());
+    game_objects.emplace_back(cube);
+}
+void Scene::add_primitive(Rect* rect) {
+    ASSERT(rect != nullptr, "passing in rect as a nullptr");
+    rect->meshes.back().set_vao(engine::get_renderer().rect_vao());
+    rect->set_id(generate_id());
+    game_objects.emplace_back(rect);
+}
+void Scene::add_primitive(Circle* circle) {
+    ASSERT(circle != nullptr, "passing in circle as a nullptr");
+    circle->meshes.back().set_vao(engine::get_renderer().circle_vao());
+    circle->set_id(generate_id());
+    game_objects.emplace_back(circle);
+}
+void Scene::add_primitive(Sphere* sphere) {
+    ASSERT(sphere != nullptr, "passing in sphere as a nullptr");
+    sphere->meshes.back().set_vao(engine::get_renderer().sphere_vao());
+    sphere->meshes.back().draw_command = engine::get_renderer().sphere_mesh_draw_command();
+    sphere->set_id(generate_id());
+    game_objects.emplace_back(sphere);
+}
+
+PointLight& Scene::create_point_light() {
+    point_lights[_n_point_lights] = new PointLight();
+    return *point_lights[_n_point_lights++];
+}
+
+SpotLight& Scene::create_spot_light() {
+    spot_lights[_n_spot_lights] = new SpotLight();
+    return *spot_lights[_n_spot_lights++];
+}
+DirLight& Scene::create_dir_light() {
+    directional_lights[_n_dir_lights] = new DirLight();
+    return *directional_lights[_n_dir_lights++];
+}
+
+void Scene::add_point_light(PointLight* point_light) {
+    ASSERT(point_light != nullptr, "passing in point_light as a nullptr");
+    point_lights[_n_point_lights] = point_light;
+    _n_point_lights++;
+}
+void Scene::add_spot_light(SpotLight* spot_light) {
+    ASSERT(spot_light != nullptr, "passing in spot_light as a nullptr");
+    spot_lights[_n_spot_lights] = spot_light;
+    _n_spot_lights++;
+}
+void Scene::add_directional_light(DirLight* dir_light) {
+    ASSERT(dir_light != nullptr, "passing in dir_light as a nullptr");
+    directional_lights[_n_dir_lights] = dir_light;
+    _n_dir_lights++;
+}
+
+size_t Scene::point_lights_used() const {
+    return _n_point_lights;
+}
+size_t Scene::spot_lights_used() const {
+    return _n_spot_lights;
+}
+size_t Scene::dir_lights_used() const {
+    return _n_dir_lights;
+}
+
+bool Scene::has_lights() const {
+    return _n_point_lights > 0
+        || _n_spot_lights > 0
+        || _n_dir_lights > 0;
+}
+
+void Scene::clear_game_objects() {
+    for (size_t i = 0; i < game_objects.size(); i++) {
+        delete game_objects[i];
+    }
+}
+
+void Scene::clear_lights() {
+    for (size_t i  = 0; i < point_lights.size(); i++) {
+        delete point_lights[i];
+    }
+    for (size_t i  = 0; i < spot_lights.size(); i++) {
+        delete spot_lights[i];
+    }
+    for (size_t i  = 0; i < directional_lights.size(); i++) {
+        delete directional_lights[i];
+    }
+}
+
+uint Scene::generate_id() {
+    static uint id = 0;
+    return id++;
+}
+
