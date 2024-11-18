@@ -13,5 +13,8 @@ scene assigns the uuid when calling create or add
 use that to find the game object in Scene::game_objects
 then just delete that game object from the list. free it? idk
 
+now that there are ids. can check if something with that id has been added
+before to prevent multiples of the exact same game object
+
 Lights currently don't have ids
 

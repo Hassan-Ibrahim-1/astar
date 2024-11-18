@@ -1,11 +1,15 @@
 #include "app.hpp"
+#include "debug.hpp"
 
 void App::init() {
-
+    scene.add_game_object(&obj);
+    scene.add_primitive(&rect);
+    LOG("obj id: %u", obj.get_id());
+    LOG("rect id: %u", rect.get_id());
 }
 
 void App::update() {
-
+    
 }
 
 void App::cleanup() {
