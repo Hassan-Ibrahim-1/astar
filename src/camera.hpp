@@ -13,11 +13,12 @@ enum class CameraDirection {
     DOWN,
 };
 
-// FIXME: Why?
+// FIXME: Why does this exist?
 namespace CameraDefaults {
     constexpr float fov = 45.0f;
     const glm::vec2 sensitivity(0.1f, 0.1f);
     constexpr float velocity = 7.0f;
+    // NOTE: don't think rotation matters here
     const Rotation rotation(-90.0f, 0.0f, 0.0f);
     const glm::vec3 front(0.0f, 0.0f, -1.0f);
     constexpr float near = 0.1f;

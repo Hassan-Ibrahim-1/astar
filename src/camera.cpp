@@ -11,7 +11,9 @@ Camera::Camera(Transform transform, glm::vec3 world_up)
 }
 
 Camera::Camera(glm::vec3 position, Rotation rotation, glm::vec3 scale, glm::vec3 world_up)
-    : Camera(Transform(position, scale, rotation), world_up) {}
+    : Camera(Transform(position, scale, rotation), world_up) {
+    update_vectors();
+}
 
 glm::mat4 Camera::get_view_matrix() {
     return glm::lookAt(transform.position, transform.position + front, up);

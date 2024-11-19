@@ -1,5 +1,6 @@
 #pragma once
 
+#include "debug.hpp"
 #include "game_object.hpp"
 #include "material.hpp"
 #include "transform.hpp"
@@ -30,6 +31,29 @@ struct Rect : GameObject {
         : GameObject(Transform(position), material) {
         Mesh& mesh = create_mesh();
         mesh.draw_command = rect_draw_command;
+    }
+
+    void set_fill(bool fill) {
+        ASSERT(!meshes.empty(), "rect mesh has not been created");
+        if (fill) {
+            Mesh& mesh = meshes.front();
+            mesh.draw_command = rect_draw_command;
+        }
+        else {
+            Mesh& mesh = meshes.front();
+            mesh.draw_command.mode = DrawCommandMode::LINE_LOOP;
+            mesh.draw_command.count = 4;
+            mesh.draw_command.type = DrawCommandType::DRAW_ARRAYS;
+
+        }
+    }
+
+    bool is_filled() {
+        ASSERT(!meshes.empty(), "rect mesh has not been created");
+        // HACK: this is really dumb. probably should have an internal bool
+        // just checks if the count equals the default count
+        // it won't equal the default count if it isn't filled
+        return meshes.front().draw_command.count == rect_draw_command.count;
     }
 };
 

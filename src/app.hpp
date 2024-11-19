@@ -8,6 +8,7 @@ public:
     void cleanup() override;
 
     GameObject* obj = new GameObject;
+
     Rect& rect = *new Rect;
 };
 

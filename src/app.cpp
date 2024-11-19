@@ -4,14 +4,13 @@
 #include "utils.hpp"
 
 void App::init() {
-    camera.transform.position = glm::vec3(0, 0, 4);
+    /*camera.transform.position = glm::vec3(0, 0, 4);*/
+    rect.transform.position.x = 1;
+    rect.transform.rotation.yaw = 90;
+
+    rect.set_fill(false);
     scene.add_primitive(&rect);
     scene.add_game_object(obj);
-    LOG("obj id: %u", obj->get_id());
-    LOG("rect id: %u", rect.get_id());
-    LOG("game object count before deleting: %u", scene.game_object_count());
-    obj = scene.delete_game_object(obj);
-    LOG("game object count after deleting: %u", scene.game_object_count());
 }
 
 void App::update() {
