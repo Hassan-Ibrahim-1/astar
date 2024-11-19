@@ -7,7 +7,7 @@ public:
     void update() override;
     void cleanup() override;
 
-    GameObject& obj = *new GameObject;
+    GameObject* obj = new GameObject;
     Rect& rect = *new Rect;
 };
 

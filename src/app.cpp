@@ -1,15 +1,23 @@
 #include "app.hpp"
 #include "debug.hpp"
+#include "engine.hpp"
+#include "utils.hpp"
 
 void App::init() {
-    scene.add_game_object(&obj);
+    camera.transform.position = glm::vec3(0, 0, 4);
     scene.add_primitive(&rect);
-    LOG("obj id: %u", obj.get_id());
+    scene.add_game_object(obj);
+    LOG("obj id: %u", obj->get_id());
     LOG("rect id: %u", rect.get_id());
+    LOG("game object count before deleting: %u", scene.game_object_count());
+    obj = scene.delete_game_object(obj);
+    LOG("game object count after deleting: %u", scene.game_object_count());
 }
 
 void App::update() {
-    
+    if (engine::cursor_enabled) {
+        utils::imgui_rect("rect", rect);
+    }
 }
 
 void App::cleanup() {

@@ -35,6 +35,17 @@ public:
     void add_primitive(Circle* circle);
     void add_primitive(Sphere* sphere);
 
+    uint game_object_count() const {
+        return game_objects.size();
+    }
+
+    // NOTE: this frees the game object
+    // Make sure this gameobject has been added to scene before
+    // otherwise nothing will happen
+    // DO NOT USE THE GAME OBJECT AFTER CALLING THIS
+    // Returns nullptr
+    GameObject* delete_game_object(GameObject* gobj);
+
     PointLight& create_point_light();
     SpotLight& create_spot_light();
     DirLight& create_dir_light();
@@ -60,5 +71,7 @@ private:
 
     // NOTE: super simple rn. just increments a counter and returns the result
     uint generate_id();
+    // returns -1 if no index is found
+    int get_game_object_index(uint obj_id);
 };
 

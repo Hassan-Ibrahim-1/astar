@@ -7,11 +7,11 @@ first test using a basic grid
 figure out how to deal with deleting rects
 just clear all of them out?
 
-assign a uuid to a game object on creation
-scene assigns the uuid when calling create or add
-
 use that to find the game object in Scene::game_objects
 then just delete that game object from the list. free it? idk
+
+add a delete game object function in Scene figure out if this frees
+or not?
 
 now that there are ids. can check if something with that id has been added
 before to prevent multiples of the exact same game object

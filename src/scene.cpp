@@ -58,6 +58,15 @@ DirLight& Scene::create_dir_light() {
     return *directional_lights[_n_dir_lights++];
 }
 
+GameObject* Scene::delete_game_object(GameObject* gobj) {
+    int index = get_game_object_index(gobj->get_id());
+    ASSERT(index != -1, "Game object with id %u does not exist in the current scene", gobj->get_id());
+
+    delete game_objects[index];
+    game_objects.erase(game_objects.begin() + index);
+    return nullptr;
+}
+
 void Scene::add_point_light(PointLight* point_light) {
     ASSERT(point_light != nullptr, "passing in point_light as a nullptr");
     point_lights[_n_point_lights] = point_light;
@@ -111,5 +120,14 @@ void Scene::clear_lights() {
 uint Scene::generate_id() {
     static uint id = 0;
     return id++;
+}
+
+int Scene::get_game_object_index(uint obj_id) {
+    for (uint i = 0; i < game_objects.size(); i++) {
+        if (game_objects[i]->get_id() == obj_id) {
+            return i;
+        }
+    }
+    return -1;
 }
 
