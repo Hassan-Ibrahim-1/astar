@@ -5,10 +5,10 @@
 
 void App::init() {
     /*camera.transform.position = glm::vec3(0, 0, 4);*/
-    rect.transform.position.x = 1;
-    rect.transform.rotation.yaw = 90;
+    /*rect.transform.position.x = 1;*/
+    /*rect.transform.rotation.yaw = 90;*/
 
-    rect.set_fill(false);
+    /*rect.set_fill(false);*/
     scene.add_primitive(&rect);
     scene.add_game_object(obj);
 }

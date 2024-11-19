@@ -1,9 +1,9 @@
 #include <ctime>
 
+#include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 
 #include "utils.hpp"
-#include <glm/gtc/matrix_transform.hpp>
 #include "jpeglib.h"
 #include "input.hpp"
 

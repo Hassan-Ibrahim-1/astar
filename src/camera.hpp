@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 
+#include "imgui.h"
 #include "transform.hpp"
 
 enum class CameraDirection {
@@ -18,7 +19,6 @@ namespace CameraDefaults {
     constexpr float fov = 45.0f;
     const glm::vec2 sensitivity(0.1f, 0.1f);
     constexpr float velocity = 7.0f;
-    // NOTE: don't think rotation matters here
     const Rotation rotation(-90.0f, 0.0f, 0.0f);
     const glm::vec3 front(0.0f, 0.0f, -1.0f);
     constexpr float near = 0.1f;
@@ -28,7 +28,11 @@ namespace CameraDefaults {
 
 class Camera {
 public:
-    Transform transform;
+    Transform transform = {
+        glm::vec3(0),
+        glm::vec3(1),
+        CameraDefaults::rotation
+    };
 
     glm::vec3 world_up;
 
@@ -48,6 +52,7 @@ public:
     Camera(Transform transform,
            glm::vec3 world_up = glm::vec3(0.0f, 1.0f, 0.0f));
 
+    // NOTE: default constructor
     // vector init
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
            Rotation rotation = CameraDefaults::rotation,
@@ -65,8 +70,9 @@ public:
     void look_back();
     void set_rotation(float yaw, float pitch);
 
+    void update_vectors();
+
 private:
     bool _reset_look_back = false;
-    void update_vectors();
 };
 

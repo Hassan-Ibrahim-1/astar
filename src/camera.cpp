@@ -1,18 +1,18 @@
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "debug.hpp"
 #include "camera.hpp"
+#include "imgui.h"
 #include "transform.hpp"
 
 Camera::Camera(Transform transform, glm::vec3 world_up)
     : transform(transform),
       world_up(world_up),
       up(world_up) {
-    update_vectors();
 }
 
 Camera::Camera(glm::vec3 position, Rotation rotation, glm::vec3 scale, glm::vec3 world_up)
     : Camera(Transform(position, scale, rotation), world_up) {
-    update_vectors();
 }
 
 glm::mat4 Camera::get_view_matrix() {
@@ -101,11 +101,12 @@ void Camera::set_rotation(float yaw, float pitch) {
 
 void Camera::update_vectors() {
     // Calculate new front vector - where the camera is facing
-    front.x = cos(glm::radians(transform.rotation.yaw)) * cos(glm::radians(transform.rotation.pitch));
-    front.y = sin(glm::radians(transform.rotation.pitch));
-    front.z = sin(glm::radians(transform.rotation.yaw)) * cos(glm::radians(transform.rotation.pitch));
-    front = glm::normalize(front);
+    glm::vec3 tmp_front;
+    tmp_front.x = cos(glm::radians(transform.rotation.yaw)) * cos(glm::radians(transform.rotation.pitch));
+    tmp_front.y = sin(glm::radians(transform.rotation.pitch));
+    tmp_front.z = sin(glm::radians(transform.rotation.yaw)) * cos(glm::radians(transform.rotation.pitch));
+    front = glm::normalize(tmp_front);
     right = glm::normalize(glm::cross(front, world_up));
     up = glm::normalize(glm::cross(right, front));
+    LOG("front: %f, %f, %f", front.x, front.y, front.z);
 }
-

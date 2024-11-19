@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -115,6 +116,12 @@ void engine::default_key_callback(GLFWwindow *window, int key, int scancode, int
 }
 
 void engine::init(const EngineInitInfo& cinfo) {
+    // HACK: fixes CameraDefaults::rotation not being set for some
+    // reason. this causes the front vector to be 1, 0, 0 instead of
+    // what its supposed to be which is 0, 0, -1.
+    // Figure out how to not have to do this
+    _camera.set_rotation(-90, 0);
+
     utils::init();
     fs::init("shaders", "models");
     init_glfw();
@@ -176,12 +183,13 @@ void engine::show_default_imgui_window() {
             ImGui::TreePop();
         }
         if (ImGui::TreeNode("Camera")) {
-            utils::imgui_transform("transform", _camera.transform);
+            utils::imgui_transform("camera", _camera.transform);
             ImGui::DragFloat("speed", &_camera.velocity);
             ImGui::DragFloat("frustum near", &_camera.near);
             ImGui::DragFloat("frustum far", &_camera.far);
             ImGui::Spacing();
             ImGui::TreePop();
+            _camera.update_vectors();
         }
         utils::imgui_color_edit4("clear color", clear_color);
         utils::imgui_fps_text();

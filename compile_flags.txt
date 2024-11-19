@@ -8,4 +8,5 @@
 -I./dependencies/imgui
 -I./dependencies/imgui/backends
 -I./dependencies/noise/
+-Idependencies/libjpeg/
 
