@@ -50,9 +50,6 @@ void Grid::create_cells(uint ncells) {
 }
 
 void Grid::add_to_scene() {
-    _boundary_in_scene = true;
-    boundary.set_fill(false);
-    _scene.add_primitive(&boundary);
     for (auto& cell : cells) {
         _scene.add_primitive(cell);
     }

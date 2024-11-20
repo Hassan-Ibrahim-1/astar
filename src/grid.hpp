@@ -11,7 +11,8 @@ struct Cell : public Rect {
 
 class Grid {
 public:
-    Rect& boundary = *new Rect;
+    // NOTE: boundary is never rendered becase it doesn't have to be
+    Rect boundary;
     // Probably doesn't have to be heap allocated
     std::vector<Cell*> cells;
 
@@ -20,11 +21,6 @@ public:
         create_cells(ncells);
     }
     ~Grid() {
-        // I think scene deletes this automatically
-        /*delete_cells();*/
-        /*if (_boundary_in_scene) {*/
-        /*    _scene.delete_game_object(&boundary);*/
-        /*}*/
     }
 
     void create_cells(uint ncells);
@@ -34,6 +30,5 @@ public:
 private:
     // probably not the best way to do this
     Scene& _scene = engine::get_scene();
-    bool _boundary_in_scene = false;
 };
 
