@@ -72,7 +72,14 @@ public:
 
     void update_vectors();
 
+    // Locks the camera at the current position and view direviton
+    void lock();
+    void unlock();
+
+    bool locked() const;
+
 private:
     bool _reset_look_back = false;
+    bool _locked = false;
 };
 

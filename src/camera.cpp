@@ -30,6 +30,9 @@ glm::mat4 Camera::get_perspective_matrix() {
 }
 
 void Camera::process_keyboard(CameraDirection direction, float delta_time) {
+    if (_locked) {
+        return;
+    }
     static const float vertical_multiplier = 5.0f;
 
     float speed = velocity * delta_time;
@@ -57,6 +60,9 @@ void Camera::process_keyboard(CameraDirection direction, float delta_time) {
 }
 
 void Camera::process_mouse_movement(float x_offset, float y_offset, bool constrain_pitch, bool invert_pitch) {
+    if (_locked) {
+        return;
+    }
     transform.rotation.yaw += (x_offset * sensitivity.x);
     transform.rotation.pitch += ((invert_pitch ? y_offset : -y_offset) * sensitivity.y);
     /*transform.rotation.yaw += x_offset * sensitivity.x;*/
@@ -109,3 +115,14 @@ void Camera::update_vectors() {
     right = glm::normalize(glm::cross(front, world_up));
     up = glm::normalize(glm::cross(right, front));
 }
+void Camera::lock() {
+    _locked = true;
+}
+void Camera::unlock() {
+    _locked = false;
+}
+
+bool Camera::locked() const {
+    return _locked;
+}
+

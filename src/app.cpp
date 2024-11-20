@@ -11,6 +11,8 @@ void App::init() {
     /*rect.set_fill(false);*/
     grid.create_cells(ncells);
     grid.add_to_scene();
+    camera.transform.position.z = 1.3;
+    camera.lock();
 }
 
 void App::update() {

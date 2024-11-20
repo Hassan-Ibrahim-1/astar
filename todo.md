@@ -24,16 +24,16 @@ Kind of fixed. hacky way in engine.cpp
 
 # 2D demo
 
-Fix stuff with index 0. might be something added with it already?
-Look at the commented out code in delete_game_object
-Don't crash when something doesn't go right in Scene
-Look at the stuff in the add_ functions with the game index checking against -1
-all that is bugged
+-- Fix stuff with index 0. might be something added with it already?
+-- Look at the commented out code in delete_game_object
+-- Don't crash when something doesn't go right in Scene
+-- Look at the stuff in the add_ functions with the game index checking against -1
+-- all that is bugged
 
-Make it so that the grid can be customized at runtime.
+-- Make it so that the grid can be customized at runtime.
+Lock the camera to make it look 2D?
 Add mouse clicking on rects to highlight cells (walls).
 Implement A*
-Lock the camera to make it look 2D?
 
 
 
