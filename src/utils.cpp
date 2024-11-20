@@ -69,12 +69,14 @@ bool utils::imgui_transform(const std::string& name, Transform& transform) {
     return change_made;
 }
 
-void utils::imgui_rect(const std::string& name, Rect& rect) {
+bool utils::imgui_rect(const std::string& name, Rect& rect) {
+    bool edited = false;
     imgui_color_edit3(name + " color", rect.material.color);
-    imgui_transform(name, rect.transform);
+    edited = imgui_transform(name, rect.transform);
     bool fill = rect.is_filled();
     ImGui::Checkbox("fill", &fill);
     rect.set_fill(fill);
+    return edited;
 }
 
 void utils::imgui_cube(const std::string& name, Cube& cube) {
