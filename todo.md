@@ -17,7 +17,8 @@ before to prevent multiples of the exact same game object
 
 Lights currently don't have ids
 
-Front is always set to 1, 0, 0
-camera is rotated at 0,0 probably some recent change that broke this.
-x and z are flipped?
+Kind of fixed. hacky way in engine.cpp
+ -- Front is always set to 1, 0, 0
+ -- camera is rotated at 0,0 probably some recent change that broke this.
+ -- x and z are flipped?
 

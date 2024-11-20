@@ -108,5 +108,4 @@ void Camera::update_vectors() {
     front = glm::normalize(tmp_front);
     right = glm::normalize(glm::cross(front, world_up));
     up = glm::normalize(glm::cross(right, front));
-    LOG("front: %f, %f, %f", front.x, front.y, front.z);
 }
