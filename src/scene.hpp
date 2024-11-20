@@ -27,6 +27,8 @@ public:
 
     // game_object must be allocated on the heap
     // it will get freed in the destructor of Scene
+    // when calling one of these functions, if the GameObject already exists in the scene
+    // nothing will happen, it'll just get logged
     GameObject& create_game_object(Transform transform = Transform(), Material material = Material());
     void add_game_object(GameObject* game_object);
     // Not const because it does some stuff with setting the mesh vao

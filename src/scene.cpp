@@ -15,29 +15,57 @@ GameObject& Scene::create_game_object(Transform transform, Material material) {
 
 void Scene::add_game_object(GameObject* game_object) {
     ASSERT(game_object != nullptr, "passing in game_object as a nullptr");
+    // If the game object exists do nothing
+    /*if (get_game_object_index(game_object->get_id()) != -1) {*/
+    /*    LOG("Game object with ID: %u already exists. Can't add it again.", game_object->get_id());*/
+    /*    return;*/
+    /*}*/
+
     game_object->set_id(generate_id());
+    LOG("adding game object with id: %u", game_object->get_id());
     game_objects.emplace_back(game_object);
 }
 void Scene::add_primitive(Cube* cube) {
     ASSERT(cube != nullptr, "passing in cube as a nullptr");
-    cube->meshes.back().set_vao(engine::get_renderer().cube_vao());
+    if (get_game_object_index(cube->get_id()) != -1) {
+        LOG("Game object with ID: %u already exists. Can't add it again.", cube->get_id());
+        return;
+    }
+
+    /*ASSERT(cube->mesh_count() > 0, "Rect with ID: %u has no meshes", cube->get_id());*/
+    cube->meshes.front().set_vao(engine::get_renderer().cube_vao());
     cube->set_id(generate_id());
     game_objects.emplace_back(cube);
 }
 void Scene::add_primitive(Rect* rect) {
     ASSERT(rect != nullptr, "passing in rect as a nullptr");
-    rect->meshes.back().set_vao(engine::get_renderer().rect_vao());
+    /*if (get_game_object_index(rect->get_id()) != -1) {*/
+    /*    LOG("Game object with ID: %u already exists. Can't add it again.", rect->get_id());*/
+    /*    return;*/
+    /*}*/
+
+    rect->meshes.front().set_vao(engine::get_renderer().rect_vao());
     rect->set_id(generate_id());
     game_objects.emplace_back(rect);
 }
 void Scene::add_primitive(Circle* circle) {
     ASSERT(circle != nullptr, "passing in circle as a nullptr");
+    if (get_game_object_index(circle->get_id()) != -1) {
+        LOG("Game object with ID: %u already exists. Can't add it again.", circle->get_id());
+        return;
+    }
+
     circle->meshes.back().set_vao(engine::get_renderer().circle_vao());
     circle->set_id(generate_id());
     game_objects.emplace_back(circle);
 }
 void Scene::add_primitive(Sphere* sphere) {
     ASSERT(sphere != nullptr, "passing in sphere as a nullptr");
+    if (get_game_object_index(sphere->get_id()) != -1) {
+        LOG("Game object with ID: %u already exists. Can't add it again.", sphere->get_id());
+        return;
+    }
+
     sphere->meshes.back().set_vao(engine::get_renderer().sphere_vao());
     sphere->meshes.back().draw_command = engine::get_renderer().sphere_mesh_draw_command();
     sphere->set_id(generate_id());

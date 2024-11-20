@@ -1,6 +1,26 @@
 #pragma once
 
 #include <iostream>
+#include <execinfo.h>
+#include <cstdlib>
+
+namespace debug {
+
+inline void print_stack_trace() {
+    const int max_frames = 64;
+    void* stack_frames[max_frames];
+    int num_frames = backtrace(stack_frames, max_frames);
+
+    // Print the stack trace to stdout
+    char** symbols = backtrace_symbols(stack_frames, num_frames);
+    for (int i = 0; i < num_frames; i++) {
+        std::cout << symbols[i] << '\n';
+    }
+
+    free(symbols);
+}
+
+}
 
 #define DEBUG_LOG
 #define DEBUG_ASSERT
@@ -33,6 +53,7 @@
             fprintf(stderr, "%sAssertion failed in %s:%s %s | ", DEBUG_RED, __PRETTY_FUNCTION__, DEBUG_RESET, #condition); \
             fprintf(stderr, msg, ##__VA_ARGS__); \
             fprintf(stderr, "\n"); \
+            debug::print_stack_trace(); \
             std::abort(); \
         } \
     } while (0)

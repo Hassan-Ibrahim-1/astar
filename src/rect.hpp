@@ -5,7 +5,7 @@
 #include "material.hpp"
 #include "transform.hpp"
 
-struct Rect : GameObject {
+struct Rect : public GameObject {
     static constexpr DrawCommand rect_draw_command = {
         DrawCommandType::DRAW_ELEMENTS,
         DrawCommandMode::TRIANGLES,

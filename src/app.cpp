@@ -9,18 +9,20 @@ void App::init() {
     /*rect.transform.rotation.yaw = 90;*/
 
     /*rect.set_fill(false);*/
-    scene.add_primitive(&rect);
-    scene.add_game_object(obj);
+    grid.create_cells(ncells);
+    grid.add_to_scene();
 }
 
 void App::update() {
     if (engine::cursor_enabled) {
-        utils::imgui_rect("rect", rect);
+        utils::imgui_rect("boundary", grid.boundary);
+        ImGui::DragInt("ncells", (int*)&ncells, 1, 0);
+        grid.boundary = boundary;
+        /*grid.create_cells(ncells);*/
     }
 }
 
 void App::cleanup() {
-
 }
 
 /*void create_grid() {*/
