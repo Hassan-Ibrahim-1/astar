@@ -183,13 +183,14 @@ void engine::show_default_imgui_window() {
             ImGui::TreePop();
         }
         if (ImGui::TreeNode("Camera")) {
-            utils::imgui_transform("camera", _camera.transform);
+            if (utils::imgui_transform("camera", _camera.transform)) {
+                _camera.update_vectors();
+            }
             ImGui::DragFloat("speed", &_camera.velocity);
             ImGui::DragFloat("frustum near", &_camera.near);
             ImGui::DragFloat("frustum far", &_camera.far);
             ImGui::Spacing();
             ImGui::TreePop();
-            _camera.update_vectors();
         }
         utils::imgui_color_edit4("clear color", clear_color);
         utils::imgui_fps_text();

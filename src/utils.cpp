@@ -55,11 +55,18 @@ void utils::imgui_vec3(const std::string& name, glm::vec3 vec) {
     ImGui::DragFloat3(name.c_str(), (float*)&vec);
 }
 
-void utils::imgui_transform(const std::string& name, Transform& transform) {
-    ImGui::DragFloat3((name + " pos").c_str(), (float*)&transform.position, 0.1);
-    ImGui::DragFloat3((name + " scale").c_str(), (float*)&transform.scale, 0.1);
-    /*ImGui::DragFloat3((name + " rotation").c_str(), (float*)&transform.rotation, 0.01f);*/
-    ImGui::DragFloat3((name + " rotation").c_str(), (float*)&transform.rotation);
+bool utils::imgui_transform(const std::string& name, Transform& transform) {
+    bool change_made = false;
+    if (ImGui::DragFloat3((name + " pos").c_str(), (float*)&transform.position, 0.1)) {
+        change_made = true;
+    }
+    if (ImGui::DragFloat3((name + " scale").c_str(), (float*)&transform.scale, 0.1)) {
+        change_made = true;
+    }
+    if(ImGui::DragFloat3((name + " rotation").c_str(), (float*)&transform.rotation)) {
+        change_made = true;
+    }
+    return change_made;
 }
 
 void utils::imgui_rect(const std::string& name, Rect& rect) {

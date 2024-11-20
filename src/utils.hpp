@@ -29,7 +29,7 @@ void imgui_fps_text();
 
 // Primitives
 void imgui_vec3(const std::string& name, glm::vec3 vec);
-void imgui_transform(const std::string& name, Transform& transform);
+bool imgui_transform(const std::string& name, Transform& transform);
 void imgui_rect(const std::string& name, Rect& rect);
 void imgui_cube(const std::string& name, Cube& cube);
 void imgui_sphere(const std::string& name, Sphere& sphere);
