@@ -16,8 +16,14 @@ void App::init() {
 void App::update() {
     if (engine::cursor_enabled) {
         utils::imgui_rect("boundary", grid.boundary);
-        ImGui::DragInt("ncells", (int*)&ncells, 1, 0);
-        /*grid.create_cells(ncells);*/
+        if (ImGui::DragInt("ncells", (int*)&ncells, 1, 0)) {
+            grid.create_cells(ncells);
+            // TODO: this fixes something
+            // this is really buggy.
+            // Fix memory stuff. Maybe automatically
+            // add to scene
+            grid.add_to_scene();
+        }
     }
 }
 

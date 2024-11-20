@@ -87,6 +87,10 @@ DirLight& Scene::create_dir_light() {
 }
 
 GameObject* Scene::delete_game_object(GameObject* gobj) {
+    /*if (game_objects.empty()) {*/
+    /*    LOG("Trying to delete a game object when there are no game objects in the current scene.");*/
+    /*    return gobj;*/
+    /*}*/
     int index = get_game_object_index(gobj->get_id());
     ASSERT(index != -1, "Game object with id %u does not exist in the current scene", gobj->get_id());
 
