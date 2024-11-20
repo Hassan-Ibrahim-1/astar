@@ -37,7 +37,7 @@ public:
     friend bool operator!=(const GameObject& g1, const GameObject& g2);
 
 private:
-    uint _id = 0;
+    int _id = -1;
 };
 
 inline bool operator==(const GameObject& g1, const GameObject& g2) {

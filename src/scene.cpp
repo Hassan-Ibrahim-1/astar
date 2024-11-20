@@ -16,10 +16,10 @@ GameObject& Scene::create_game_object(Transform transform, Material material) {
 void Scene::add_game_object(GameObject* game_object) {
     ASSERT(game_object != nullptr, "passing in game_object as a nullptr");
     // If the game object exists do nothing
-    /*if (get_game_object_index(game_object->get_id()) != -1) {*/
-    /*    LOG("Game object with ID: %u already exists. Can't add it again.", game_object->get_id());*/
-    /*    return;*/
-    /*}*/
+    if (get_game_object_index(game_object->get_id()) != -1) {
+        LOG("Game object with ID: %u already exists. Can't add it again.", game_object->get_id());
+        return;
+    }
 
     game_object->set_id(generate_id());
     LOG("adding game object with id: %u", game_object->get_id());
@@ -39,10 +39,10 @@ void Scene::add_primitive(Cube* cube) {
 }
 void Scene::add_primitive(Rect* rect) {
     ASSERT(rect != nullptr, "passing in rect as a nullptr");
-    /*if (get_game_object_index(rect->get_id()) != -1) {*/
-    /*    LOG("Game object with ID: %u already exists. Can't add it again.", rect->get_id());*/
-    /*    return;*/
-    /*}*/
+    if (get_game_object_index(rect->get_id()) != -1) {
+        LOG("Game object with ID: %u already exists. Can't add it again.", rect->get_id());
+        return;
+    }
 
     rect->meshes.front().set_vao(engine::get_renderer().rect_vao());
     rect->set_id(generate_id());
@@ -50,6 +50,7 @@ void Scene::add_primitive(Rect* rect) {
 }
 void Scene::add_primitive(Circle* circle) {
     ASSERT(circle != nullptr, "passing in circle as a nullptr");
+
     if (get_game_object_index(circle->get_id()) != -1) {
         LOG("Game object with ID: %u already exists. Can't add it again.", circle->get_id());
         return;
@@ -61,6 +62,7 @@ void Scene::add_primitive(Circle* circle) {
 }
 void Scene::add_primitive(Sphere* sphere) {
     ASSERT(sphere != nullptr, "passing in sphere as a nullptr");
+
     if (get_game_object_index(sphere->get_id()) != -1) {
         LOG("Game object with ID: %u already exists. Can't add it again.", sphere->get_id());
         return;
@@ -154,7 +156,9 @@ uint Scene::generate_id() {
     return id++;
 }
 
-int Scene::get_game_object_index(uint obj_id) {
+int Scene::get_game_object_index(int obj_id) {
+    if (obj_id == -1) return -1;
+
     for (uint i = 0; i < game_objects.size(); i++) {
         if (game_objects[i]->get_id() == obj_id) {
             return i;

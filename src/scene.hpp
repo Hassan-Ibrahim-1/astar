@@ -74,6 +74,6 @@ private:
     // NOTE: super simple rn. just increments a counter and returns the result
     uint generate_id();
     // returns -1 if no index is found
-    int get_game_object_index(uint obj_id);
+    int get_game_object_index(int obj_id);
 };
 
