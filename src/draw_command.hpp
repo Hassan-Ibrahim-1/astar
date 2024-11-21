@@ -28,7 +28,7 @@ namespace draw_command_utils {
 
 struct DrawCommand {
     DrawCommandType type;
-    DrawCommandMode mode; // GL_TRIANGLES, GL_POINTS, etc
+    DrawCommandMode mode;
     size_t count = 0;
 };
 

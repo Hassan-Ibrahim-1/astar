@@ -51,6 +51,8 @@ void add_to_imgui(Transform& transform);
 bool mouse_in_circle(glm::vec3 position, float radius);
 bool mouse_in_circle(Circle& circle);
 
+bool mouse_in_rect(const Rect& rect);
+
 // This is a horrible function
 std::vector<u8> color3_vector_to_u8_vector(std::vector<Color3>& vec);
 

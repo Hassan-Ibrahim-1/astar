@@ -31,7 +31,7 @@ Kind of fixed. hacky way in engine.cpp
 -- all that is bugged
 
 -- Make it so that the grid can be customized at runtime.
-Lock the camera to make it look 2D?
+-- Lock the camera to make it look 2D?
 Add mouse clicking on rects to highlight cells (walls).
 Implement A*
 

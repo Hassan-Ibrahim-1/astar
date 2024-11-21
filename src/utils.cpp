@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "utils.hpp"
+#include "engine.hpp"
 #include "jpeglib.h"
 #include "input.hpp"
 
@@ -159,6 +160,25 @@ bool utils::mouse_in_circle(glm::vec3 position, float radius) {
         + (mouse_p.y - position.y)
         * (mouse_p.y - position.y);
     return dist < radius * radius;
+}
+
+bool utils::mouse_in_rect(const Rect& rect) {
+    auto mouse_p = input::get_mouse_pos();
+
+    // Top left
+    float start_x = rect.transform.position.x - (rect.transform.scale.x / 2);
+    float start_y = rect.transform.position.y + (rect.transform.scale.y / 2);
+    // HACK: this fixes rect y being bs
+    start_y *= 2; 
+    // Bottom right
+    float end_x = rect.transform.position.x + (rect.transform.scale.x / 2);
+    float end_y = rect.transform.position.y - (rect.transform.scale.y / 2);
+    // HACK: this fixes rect y being bs
+    end_y *= 2;
+
+    return 
+        (mouse_p.x > start_x && mouse_p.x < end_x)
+     && (mouse_p.y < start_y && mouse_p.y > end_y);
 }
 
 std::vector<u8> utils::color3_vector_to_u8_vector(std::vector<Color3>& vec) {
