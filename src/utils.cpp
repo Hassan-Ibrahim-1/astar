@@ -9,7 +9,7 @@
 #include "input.hpp"
 
 void utils::init() {
-    srand (static_cast<unsigned> (time(0)));
+    srand(static_cast<unsigned>(time(0)));
 }
 
 glm::vec3 utils::imvec4_to_glm_vec3(ImVec4& vec) {

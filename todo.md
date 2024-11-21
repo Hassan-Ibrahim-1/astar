@@ -32,8 +32,30 @@ Kind of fixed. hacky way in engine.cpp
 
 -- Make it so that the grid can be customized at runtime.
 -- Lock the camera to make it look 2D?
-Add mouse clicking on rects to highlight cells (walls).
+-- Add mouse clicking on rects to highlight cells (walls).
+
+Make it so that cells can be stored using x and y
+Maybe just store cols and rows?
+ - might not have to if i just use position data
+
 Implement A*
 
+f(n) = g(n) + h(n)
+
+n is the current node
+g(n) is the cost of getting to the current node from the start node
+    calculate this by adding all previous g(n) values
+h(n) is the estimated cost of getting to the destination node from the 
+current node.
+    maybe calculate this by just getting the distance to destination
+    from the current node? won't account for walls though
+
+Choose the path with the lowest f(n)
+
+Find neighbouring cells
+
+Ideas on how to store path:
+    just a simple vector of Cell* nodes
+    Path class that stores a vector of Cell* nodes. stores a start and end node as well
 
 
