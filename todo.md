@@ -62,3 +62,7 @@ Ideas on how to store path:
 # TODO NEXT
 Fix the bug where clicking too far from start just crashses everything
 
+Boundary checking doesn't seem to be working. Try drawing a horizontal
+line blocking the start and target cells. there's still a path that's possible
+Probably something to do with diagonals
+
