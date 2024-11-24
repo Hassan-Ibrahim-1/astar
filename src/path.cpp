@@ -136,26 +136,28 @@ void Path::update(Grid& grid) {
         }
     }
 
-    for (auto node : _open) {
-        auto cell = grid.cells[node->cell_index];
-        cell->set_fill(true);
-        cell->material.color = Color(0, 0, 255);
-    }
-    for (auto node : _closed) {
-        auto cell = grid.cells[node->cell_index];
-        cell->set_fill(true);
-        cell->material.color = Color(255, 0, 0);
-    }
 
     if (_open.empty()) {
         int index = _path_nodes[_target_index].parent_index;
-            while (grid.cells[index] != start) {
-                PathNode& node = _path_nodes[index];
-                grid.cells[node.cell_index]->set_fill(true);
-                grid.cells[node.cell_index]->material.color = Color(255, 0, 0);
-                index = node.parent_index;
-            }
+        while (grid.cells[index] != start) {
+            PathNode& node = _path_nodes[index];
+            grid.cells[node.cell_index]->set_fill(true);
+            grid.cells[node.cell_index]->material.color = Color(255, 0, 0);
+            index = node.parent_index;
         }
+    }
+    else {
+        for (auto node : _open) {
+            auto cell = grid.cells[node->cell_index];
+            cell->set_fill(true);
+            cell->material.color = Color(0, 255, 0);
+        }
+        for (auto node : _closed) {
+            auto cell = grid.cells[node->cell_index];
+            cell->set_fill(true);
+            cell->material.color = Color(255, 0, 0);
+        }
+    }
 }
 
 float Path::calculate_distance_to_target(Cell* cell) {
