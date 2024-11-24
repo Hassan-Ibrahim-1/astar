@@ -4,6 +4,8 @@ void Path::trace(Cell* start_cell, Cell* target_cell, Grid& grid) {
     ASSERT(start_cell != nullptr, "start_cell is a nullptr");
     ASSERT(target_cell != nullptr, "target_cell is a nullptr");
 
+    reset();
+
     this->start = start_cell;
     this->target = target_cell;
 
@@ -43,7 +45,7 @@ void Path::trace(Cell* start_cell, Cell* target_cell, Grid& grid) {
         for (uint neighbour : neighbours) {
             PathNode& node = _path_nodes[neighbour];
             // NOTE: Check if traversable here
-            if (node_in_closed(node)) {
+            if (!grid.cells[node.cell_index]->traversable || node_in_closed(node)) {
                 continue;
             }
             auto tmp_parent = node.parent_index;
@@ -65,6 +67,9 @@ void Path::trace(Cell* start_cell, Cell* target_cell, Grid& grid) {
                 }
             }
         }
+    }
+    if (_open.empty()) {
+        return;
     }
     int index = _path_nodes[target_index].parent_index;
     while (index != start_index) {
@@ -125,5 +130,14 @@ size_t Path::open_node_index(PathNode& node) {
 }
 size_t Path::closed_node_index(PathNode& node) {
     return std::find(_closed.begin(), _closed.end(), &node) - _closed.begin();
+}
+
+void Path::reset() {
+    start = nullptr;
+    target = nullptr;
+
+    _path_nodes.clear();
+    _open.clear();
+    _closed.clear();
 }
 

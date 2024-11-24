@@ -14,13 +14,15 @@ void App::init() {
     camera.transform.position.z = 1.3;
     camera.lock();
 
-    selected_cell = grid.cells[40];
-    start_cell = grid.cells[11];
+    target_cell = grid.cells[50];
+    start_cell = grid.cells[5];
 
     start_cell->set_fill(true);
-    selected_cell->set_fill(true);
+    target_cell->set_fill(true);
+    start_cell->material.color = Color(0, 0, 255);
+    target_cell->material.color = Color(0, 255, 0);
 
-    path.trace(start_cell, selected_cell, grid);
+    path.trace(start_cell, target_cell, grid);
 }
 
 void App::update() {
@@ -42,16 +44,24 @@ void App::update() {
                 if (utils::mouse_in_rect(*cell)) {
                     if (input::mouse_button_down(MouseButton::LEFT)) {
                         clear_path_cells();
-                        selected_cell->set_fill(false);
-                        selected_cell = cell;
-                        start_cell->set_fill(true);
+                        /*selected_cell->set_fill(false);*/
+                        /*selected_cell = cell;*/
+                        /*start_cell->set_fill(true);*/
                         /*start_cell = grid.cells[11];*/
                         /*start_cell->set_fill(true);*/
-                        LOG("clicked");
-                        path.trace(start_cell, selected_cell, grid);
+
+                        cell->traversable = false; 
+
+                        path.trace(start_cell, target_cell, grid);
                         cell->set_fill(true);
                     }
-                    else cell->set_fill(false);
+                    else {
+                        LOG("clicked");
+                        clear_path_cells();
+                        cell->traversable = true;
+                        path.trace(start_cell, target_cell, grid);
+                        cell->set_fill(false);
+                    }
                 }
             }
         }

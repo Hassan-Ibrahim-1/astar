@@ -41,5 +41,7 @@ private:
     bool node_in_closed(PathNode& node);
     size_t open_node_index(PathNode& node);
     size_t closed_node_index(PathNode& node);
+    
+    void reset();
 };
 

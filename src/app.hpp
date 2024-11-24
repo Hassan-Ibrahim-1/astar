@@ -12,11 +12,11 @@ public:
 
     /*Rect& rect = *new Rect;*/
     Rect boundary;
-    uint ncells = 513;
+    uint ncells = 100;
     Grid grid;
     Path path;
 
-    Cell* selected_cell = nullptr;
+    Cell* target_cell = nullptr;
     Cell* start_cell = nullptr;
 
     // TODO: get rid of this later. super hacky
