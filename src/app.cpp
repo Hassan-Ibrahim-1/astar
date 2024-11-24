@@ -13,11 +13,14 @@ void App::init() {
     grid.add_to_scene();
     camera.transform.position.z = 1.3;
     camera.lock();
-    grid.cells[5]->set_fill(true);
-    grid.cells[38]->set_fill(true);
 
-    path.trace(grid.cells[5], grid.cells[38], grid);
+    selected_cell = grid.cells[40];
+    start_cell = grid.cells[11];
 
+    start_cell->set_fill(true);
+    selected_cell->set_fill(true);
+
+    path.trace(start_cell, selected_cell, grid);
 }
 
 void App::update() {
@@ -38,6 +41,14 @@ void App::update() {
             for (auto cell : grid.cells) {
                 if (utils::mouse_in_rect(*cell)) {
                     if (input::mouse_button_down(MouseButton::LEFT)) {
+                        clear_path_cells();
+                        selected_cell->set_fill(false);
+                        selected_cell = cell;
+                        start_cell->set_fill(true);
+                        /*start_cell = grid.cells[11];*/
+                        /*start_cell->set_fill(true);*/
+                        LOG("clicked");
+                        path.trace(start_cell, selected_cell, grid);
                         cell->set_fill(true);
                     }
                     else cell->set_fill(false);
@@ -49,3 +60,13 @@ void App::update() {
 
 void App::cleanup() {
 }
+
+void App::clear_path_cells() {
+    for (auto cell : grid.cells) {
+        if (cell->material.color == Color(255, 0, 0)) {
+            cell->material.color = Color(255);
+            cell->set_fill(false);
+        }
+    }
+}
+

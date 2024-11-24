@@ -27,7 +27,6 @@ private:
     std::vector<PathNode> _path_nodes;
     std::vector<PathNode*> _open;
     std::vector<PathNode*> _closed;
-    /*std::unordered_map<> _closed;*/
 
     // TODO: figure out how to store the cost of getting to the start
 

@@ -1,6 +1,9 @@
 #include "path.hpp"
 
 void Path::trace(Cell* start_cell, Cell* target_cell, Grid& grid) {
+    ASSERT(start_cell != nullptr, "start_cell is a nullptr");
+    ASSERT(target_cell != nullptr, "target_cell is a nullptr");
+
     this->start = start_cell;
     this->target = target_cell;
 
@@ -79,7 +82,6 @@ float Path::calculate_distance_to_target(Cell* cell) {
 float Path::calculate_distance_from_start(PathNode& node, const Grid& grid) {
     // if start node. i think?
     if (node.parent_index == -1) {
-        LOG("no parent");
         return 0;
     }
 
