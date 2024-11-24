@@ -44,23 +44,18 @@ void App::update() {
                 if (utils::mouse_in_rect(*cell)) {
                     if (input::mouse_button_down(MouseButton::LEFT)) {
                         clear_path_cells();
-                        /*selected_cell->set_fill(false);*/
-                        /*selected_cell = cell;*/
-                        /*start_cell->set_fill(true);*/
-                        /*start_cell = grid.cells[11];*/
-                        /*start_cell->set_fill(true);*/
-
-                        cell->traversable = false; 
+                        target_cell->set_fill(false);
+                        target_cell = cell;
+                        start_cell->set_fill(true);
 
                         path.trace(start_cell, target_cell, grid);
                         cell->set_fill(true);
                     }
-                    else {
-                        LOG("clicked");
+                    else if (input::mouse_button_down(MouseButton::RIGHT)) {
                         clear_path_cells();
-                        cell->traversable = true;
+                        cell->traversable = !cell->traversable; 
                         path.trace(start_cell, target_cell, grid);
-                        cell->set_fill(false);
+                        cell->set_fill(!cell->traversable);
                     }
                 }
             }
