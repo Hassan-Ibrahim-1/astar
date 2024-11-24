@@ -19,6 +19,10 @@ public:
     Cell* target_cell = nullptr;
     Cell* start_cell = nullptr;
 
+    float current_time = 0;
+    float start_time = 0;
+    float time_threshold = 0.2;
+
     // TODO: get rid of this later. super hacky
     void clear_path_cells();
 };

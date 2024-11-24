@@ -14,18 +14,26 @@ void App::init() {
     camera.transform.position.z = 1.3;
     camera.lock();
 
-    target_cell = grid.cells[50];
+    target_cell = grid.cells[213];
     start_cell = grid.cells[5];
 
     start_cell->set_fill(true);
     target_cell->set_fill(true);
-    start_cell->material.color = Color(0, 0, 255);
-    target_cell->material.color = Color(0, 255, 0);
+    start_cell->material.color = Color(255);
+    target_cell->material.color = Color(255);
 
     path.trace(start_cell, target_cell, grid);
 }
 
 void App::update() {
+    clear_path_cells();
+    start_cell->set_fill(true);
+    target_cell->set_fill(true);
+    current_time = glfwGetTime();
+    if (current_time - start_time > time_threshold) {
+        path.update(grid);
+    }
+
     if (engine::cursor_enabled) {
         if (utils::imgui_rect("boundary", grid.boundary)
          || ImGui::DragInt("ncells", (int*)&ncells, 1, 0)) {
@@ -38,6 +46,7 @@ void App::update() {
         auto mp = input::get_mouse_pos();
         ImGui::Text("mouse pos (%f, %f)", mp.x, mp.y);
 
+        return;
         // left click to highlight, right click to remove
         if (input::mouse_button_down(MouseButton::ANY)) {
             for (auto cell : grid.cells) {
@@ -68,7 +77,8 @@ void App::cleanup() {
 
 void App::clear_path_cells() {
     for (auto cell : grid.cells) {
-        if (cell->material.color == Color(255, 0, 0)) {
+        if (cell->material.color == Color(255, 0, 0) || cell->material.color == Color(0, 255, 0)) {
+            LOG("clearing cell");
             cell->material.color = Color(255);
             cell->set_fill(false);
         }

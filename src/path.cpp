@@ -11,13 +11,12 @@ void Path::trace(Cell* start_cell, Cell* target_cell, Grid& grid) {
 
     // Create path nodes with h costs already calculated
     uint start_index = -1;
-    uint target_index = -1;
     for (size_t i = 0; i < grid.cell_count(); i++) {
         if (grid.cells[i] == start) {
             start_index = i;
         }
         if (grid.cells[i] == target) {
-            target_index = i;
+            _target_index = i;
         }
         PathNode node;
         node.cell_index = i;
@@ -31,14 +30,75 @@ void Path::trace(Cell* start_cell, Cell* target_cell, Grid& grid) {
     start_node.f = start_node.g + start_node.h;
     _open.emplace_back(&start_node);
 
+    /*PathNode* current = nullptr;*/
+    /*if (!_open.empty()) {*/
+    /*    current = lowest_cost_open_node();*/
+    /*    _open.erase(_open.begin() + open_node_index(*current));*/
+    /*    _closed.emplace_back(current);*/
+    /**/
+    /*    if (current->cell_index == target_index) {*/
+    /*        // TODO: make this a break*/
+    /*        return;*/
+    /*    }*/
+    /**/
+    /*    auto neighbours = grid.get_neighbours(current->cell_index);*/
+    /*    for (uint neighbour : neighbours) {*/
+    /*        PathNode& node = _path_nodes[neighbour];*/
+    /*        // NOTE: Check if traversable here*/
+    /*        if (!grid.cells[node.cell_index]->traversable || node_in_closed(node)) {*/
+    /*            continue;*/
+    /*        }*/
+    /*        auto cell = grid.cells[current->cell_index];*/
+    /*        auto neighbour_cell = grid.cells[node.cell_index];*/
+    /*        // No diagonals*/
+    /*        if (cell->transform.position.x != neighbour_cell->transform.position.x*/
+    /*         && cell->transform.position.y != neighbour_cell->transform.position.y) {*/
+    /*            continue;*/
+    /*        }*/
+    /*        auto tmp_parent = node.parent_index;*/
+    /*        node.parent_index = current->cell_index;*/
+    /*        float new_g = calculate_distance_from_start(node, grid);*/
+    /*        node.parent_index = tmp_parent;*/
+    /*        float new_f = node.h + new_g;*/
+    /**/
+    /*        // if not in open - add it there and remove from closed*/
+    /*        if (new_f < node.f || !(node_in_open(node))) {*/
+    /*            node.g = new_g;*/
+    /*            node.f = new_f;*/
+    /*            node.parent_index = current->cell_index;*/
+    /*            if (node_in_closed(node)) {*/
+    /*                _closed.erase(_closed.begin() + closed_node_index(node));*/
+    /*            }*/
+    /*            if (!node_in_open(node)) {*/
+    /*                _open.emplace_back(&node);*/
+    /*            }*/
+    /*        }*/
+    /*    }*/
+    /*}*/
+
+    if (_open.empty()) {
+        return;
+    }
+    return;
+    int index = _path_nodes[_target_index].parent_index;
+    while (index != start_index) {
+        PathNode& node = _path_nodes[index];
+        grid.cells[node.cell_index]->set_fill(true);
+        grid.cells[node.cell_index]->material.color = Color(255, 0, 0);
+        index = node.parent_index;
+    }
+}
+
+void Path::update(Grid& grid) {
     PathNode* current = nullptr;
-    while (!_open.empty()) {
+    if (!_open.empty()) {
         current = lowest_cost_open_node();
         _open.erase(_open.begin() + open_node_index(*current));
         _closed.emplace_back(current);
 
-        if (current->cell_index == target_index) {
-            break;
+        if (current->cell_index == _target_index) {
+            // TODO: make this a break
+            return;
         }
 
         auto neighbours = grid.get_neighbours(current->cell_index);
@@ -75,16 +135,27 @@ void Path::trace(Cell* start_cell, Cell* target_cell, Grid& grid) {
             }
         }
     }
+
+    for (auto node : _open) {
+        auto cell = grid.cells[node->cell_index];
+        cell->set_fill(true);
+        cell->material.color = Color(0, 0, 255);
+    }
+    for (auto node : _closed) {
+        auto cell = grid.cells[node->cell_index];
+        cell->set_fill(true);
+        cell->material.color = Color(255, 0, 0);
+    }
+
     if (_open.empty()) {
-        return;
-    }
-    int index = _path_nodes[target_index].parent_index;
-    while (index != start_index) {
-        PathNode& node = _path_nodes[index];
-        grid.cells[node.cell_index]->set_fill(true);
-        grid.cells[node.cell_index]->material.color = Color(255, 0, 0);
-        index = node.parent_index;
-    }
+        int index = _path_nodes[_target_index].parent_index;
+            while (grid.cells[index] != start) {
+                PathNode& node = _path_nodes[index];
+                grid.cells[node.cell_index]->set_fill(true);
+                grid.cells[node.cell_index]->material.color = Color(255, 0, 0);
+                index = node.parent_index;
+            }
+        }
 }
 
 float Path::calculate_distance_to_target(Cell* cell) {

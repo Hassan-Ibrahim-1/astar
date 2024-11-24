@@ -9,6 +9,7 @@ public:
     Cell* target;
 
     void trace(Cell* start, Cell* end, Grid& grid);
+    void update(Grid& grid);
 
 private:
     struct PathNode {
@@ -23,6 +24,8 @@ private:
 
         PathNode() {}
     };
+
+    uint _target_index = 0;
 
     std::vector<PathNode> _path_nodes;
     std::vector<PathNode*> _open;
