@@ -97,7 +97,7 @@ int Grid::cell_south(uint cell_index) const {
 }
 int Grid::cell_east(uint cell_index) const {
     // if on the right edge
-    if ((cell_index % (_cols - 1)) == 0) return -1;
+    if ((cell_index % _cols) == (_cols - 1)) return -1;
 
     uint index = cell_index + _direction_offsets[EAST];
     if (index < 0 || index >= cells.size()) {
@@ -107,7 +107,8 @@ int Grid::cell_east(uint cell_index) const {
 }
 int Grid::cell_west(uint cell_index) const {
     // if on the left edge
-    if (((cell_index + _cols) % _cols) == 0) return -1;
+    if ((cell_index % _cols) == 0) return -1;
+    /*if (((cell_index + _cols) % _cols) == 0) return -1;*/
 
     uint index = cell_index + _direction_offsets[WEST];
     if (index < 0 || index >= cells.size()) {
@@ -118,7 +119,8 @@ int Grid::cell_west(uint cell_index) const {
 
 int Grid::cell_north_east(uint cell_index) const {
     if (cell_index < _cols) return -1;
-    if ((cell_index % (_cols - 1)) == 0) return -1;
+    /*if ((cell_index % (_cols - 1)) == 0) return -1;*/
+    if ((cell_index % _cols) == (_cols - 1)) return -1;
 
     uint index = cell_index + _direction_offsets[NORTH_EAST];
     if (index < 0 || index >= cells.size()) {
@@ -128,7 +130,7 @@ int Grid::cell_north_east(uint cell_index) const {
 }
 int Grid::cell_north_west(uint cell_index) const {
     if (cell_index < _cols) return -1;
-    if (((cell_index + _cols) % _cols) == 0) return -1;
+    if ((cell_index % _cols) == 0) return -1;
 
     uint index = cell_index + _direction_offsets[NORTH_WEST];
     if (index < 0 || index >= cells.size()) {
@@ -137,8 +139,8 @@ int Grid::cell_north_west(uint cell_index) const {
     return index;
 }
 int Grid::cell_south_east(uint cell_index) const {
-    if (cell_index > _cols * (_rows -1)) return -1;
-    if ((cell_index % (_cols - 1)) == 0) return -1;
+    if (cell_index >= _cols * (_rows -1)) return -1;
+    if ((cell_index % _cols) == (_cols - 1)) return -1;
 
     uint index = cell_index + _direction_offsets[SOUTH_EAST];
     if (index < 0 || index >= cells.size()) {
@@ -148,7 +150,7 @@ int Grid::cell_south_east(uint cell_index) const {
 }
 int Grid::cell_south_west(uint cell_index) const {
     if (cell_index > _cols * (_rows -1)) return -1;
-    if (((cell_index + _cols) % _cols) == 0) return -1;
+    if ((cell_index % _cols) == 0) return -1;
 
     uint index = cell_index + _direction_offsets[SOUTH_WEST];
     if (index < 0 || index >= cells.size()) {
