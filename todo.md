@@ -59,3 +59,6 @@ Ideas on how to store path:
     Path class that stores a vector of Cell* nodes. stores a start and end node as well
 
 
+# TODO NEXT
+Fix the bug where clicking too far from start just crashses everything
+
