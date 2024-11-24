@@ -48,6 +48,13 @@ void Path::trace(Cell* start_cell, Cell* target_cell, Grid& grid) {
             if (!grid.cells[node.cell_index]->traversable || node_in_closed(node)) {
                 continue;
             }
+            auto cell = grid.cells[current->cell_index];
+            auto neighbour_cell = grid.cells[node.cell_index];
+            // No diagonals
+            if (cell->transform.position.x != neighbour_cell->transform.position.x
+             && cell->transform.position.y != neighbour_cell->transform.position.y) {
+                continue;
+            }
             auto tmp_parent = node.parent_index;
             node.parent_index = current->cell_index;
             float new_g = calculate_distance_from_start(node, grid);
