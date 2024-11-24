@@ -3,21 +3,38 @@
 #include <iostream>
 #include <execinfo.h>
 #include <cstdlib>
+#include <cxxabi.h>
+#include <dlfcn.h>
+#include <sstream>
 
 namespace debug {
 
 inline void print_stack_trace() {
-    const int max_frames = 64;
-    void* stack_frames[max_frames];
-    int num_frames = backtrace(stack_frames, max_frames);
+  constexpr int kBacktraceDepth = 15;
+  void* backtrace_addrs[kBacktraceDepth];
 
-    // Print the stack trace to stdout
-    char** symbols = backtrace_symbols(stack_frames, num_frames);
-    for (int i = 0; i < num_frames; i++) {
-        std::cout << symbols[i] << '\n';
-    }
+  int trace_size = backtrace(backtrace_addrs, kBacktraceDepth);
 
-    free(symbols);
+  for (int i = 0; i < trace_size; ++i) {
+    Dl_info info;
+    dladdr(backtrace_addrs[i], &info);
+
+    std::stringstream cmd(std::ios_base::out);
+    cmd << "atos -o " << info.dli_fname << " -l " << std::hex
+      << reinterpret_cast<uint64_t>(info.dli_fbase) << ' '
+      << reinterpret_cast<uint64_t>(backtrace_addrs[i]);
+
+    FILE* atos = popen(cmd.str().c_str(), "r");
+
+    constexpr int kBufferSize = 200;
+    char buffer[kBufferSize];
+
+    fgets(buffer, kBufferSize, atos);
+    pclose(atos);
+
+    std::cout << buffer;
+  }
+  std::cout << std::flush;
 }
 
 }

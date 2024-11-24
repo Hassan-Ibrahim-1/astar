@@ -13,8 +13,6 @@ void Grid::create_cells(uint ncells) {
     _rows = 0;
     _cols = 0;
 
-    update_direction_offsets();
-
     // put the larger factor amount of cells on the larger side
     if (boundary.transform.scale.x > boundary.transform.scale.y) {
         _rows = f1 - 1;
@@ -24,6 +22,8 @@ void Grid::create_cells(uint ncells) {
         _rows = f2 - 1;
         _cols = f1 - 1;
     }
+
+    update_direction_offsets();
 
     Transform cell_t = Transform();
     cell_t.scale.x = boundary.transform.scale.x / _cols;
@@ -66,6 +66,8 @@ void Grid::delete_cells() {
 
 void Grid::update_direction_offsets() {
     _direction_offsets[NORTH] = -_cols;
+    _direction_offsets[EAST] = 1;
+    _direction_offsets[WEST] = -1;
     _direction_offsets[SOUTH] = _cols;
     _direction_offsets[NORTH_EAST] = -_cols + 1;
     _direction_offsets[NORTH_WEST] = -_cols - 1;
@@ -73,74 +75,40 @@ void Grid::update_direction_offsets() {
     _direction_offsets[SOUTH_WEST] = _cols - 1;
 }
 
-/*uint Grid::n_cell_neighbours(uint cell_index) {*/
-/*    uint count = 0;*/
-/*    if (cell_north(cell_index) != -1) {*/
-/*        if (cells[cell_north(cell_index)].fill) {*/
-/*            count++;*/
-/*        }*/
-/*    }*/
-/*    if (cell_south(cell_index) != -1) {*/
-/*        if (cells[cell_south(cell_index)].fill) {*/
-/*            count++;*/
-/*        }*/
-/*    }*/
-/*    if (cell_east(cell_index) != -1) {*/
-/*        if (cells[cell_east(cell_index)].fill) {*/
-/*            count++;*/
-/*        }*/
-/*    }*/
-/*    if (cell_west(cell_index) != -1) {*/
-/*        if (cells[cell_west(cell_index)].fill) {*/
-/*            count++;*/
-/*        }*/
-/*    }*/
-/*    if (cell_north_east(cell_index) != -1) {*/
-/*        if (cells[cell_north_east(cell_index)].fill) {*/
-/*            count++;*/
-/*        }*/
-/*    }*/
-/*    if (cell_north_west(cell_index) != -1) {*/
-/*        if (cells[cell_north_west(cell_index)].fill) {*/
-/*            count++;*/
-/*        }*/
-/*    }*/
-/*    if (cell_south_east(cell_index) != -1) {*/
-/*        if (cells[cell_south_east(cell_index)].fill) {*/
-/*            count++;*/
-/*        }*/
-/*    }*/
-/*    if (cell_south_west(cell_index) != -1) {*/
-/*        if (cells[cell_south_west(cell_index)].fill) {*/
-/*            count++;*/
-/*        }*/
-/*    }*/
-/**/
-/*    return count;*/
-/*}*/
+int Grid::cell_north(uint cell_index) const {
+    // still on the first row
+    if (cell_index < _cols) return -1;
 
-int Grid::cell_north(uint cell_index) {
     uint index = cell_index + _direction_offsets[NORTH];
     if (index < 0 || index >= cells.size()) {
         return -1;
     }
     return index;
 }
-int Grid::cell_south(uint cell_index) {
+int Grid::cell_south(uint cell_index) const {
+    // if on the bottom row
+    if (cell_index > _cols * (_rows -1)) return -1;
+
     uint index = cell_index + _direction_offsets[SOUTH];
     if (index < 0 || index >= cells.size()) {
         return -1;
     }
     return index;
 }
-int Grid::cell_east(uint cell_index) {
+int Grid::cell_east(uint cell_index) const {
+    // if on the right edge
+    if ((cell_index % (_cols - 1)) == 0) return -1;
+
     uint index = cell_index + _direction_offsets[EAST];
     if (index < 0 || index >= cells.size()) {
         return -1;
     }
     return index;
 }
-int Grid::cell_west(uint cell_index) {
+int Grid::cell_west(uint cell_index) const {
+    // if on the left edge
+    if (((cell_index + _cols) % _cols) == 0) return -1;
+
     uint index = cell_index + _direction_offsets[WEST];
     if (index < 0 || index >= cells.size()) {
         return -1;
@@ -148,32 +116,81 @@ int Grid::cell_west(uint cell_index) {
     return index;
 }
 
-int Grid::cell_north_east(uint cell_index) {
+int Grid::cell_north_east(uint cell_index) const {
+    if (cell_index < _cols) return -1;
+    if ((cell_index % (_cols - 1)) == 0) return -1;
+
     uint index = cell_index + _direction_offsets[NORTH_EAST];
     if (index < 0 || index >= cells.size()) {
         return -1;
     }
     return index;
 }
-int Grid::cell_north_west(uint cell_index) {
+int Grid::cell_north_west(uint cell_index) const {
+    if (cell_index < _cols) return -1;
+    if (((cell_index + _cols) % _cols) == 0) return -1;
+
     uint index = cell_index + _direction_offsets[NORTH_WEST];
     if (index < 0 || index >= cells.size()) {
         return -1;
     }
     return index;
 }
-int Grid::cell_south_east(uint cell_index) {
+int Grid::cell_south_east(uint cell_index) const {
+    if (cell_index > _cols * (_rows -1)) return -1;
+    if ((cell_index % (_cols - 1)) == 0) return -1;
+
     uint index = cell_index + _direction_offsets[SOUTH_EAST];
     if (index < 0 || index >= cells.size()) {
         return -1;
     }
     return index;
 }
-int Grid::cell_south_west(uint cell_index) {
+int Grid::cell_south_west(uint cell_index) const {
+    if (cell_index > _cols * (_rows -1)) return -1;
+    if (((cell_index + _cols) % _cols) == 0) return -1;
+
     uint index = cell_index + _direction_offsets[SOUTH_WEST];
     if (index < 0 || index >= cells.size()) {
         return -1;
     }
     return index;
+}
+
+std::vector<uint> Grid::get_neighbours(uint cell_index) {
+    std::vector<uint> neighbours;
+
+    if (cell_north(cell_index) != -1) {
+        neighbours.push_back(cell_north(cell_index));
+    }
+    if (cell_south(cell_index) != -1) {
+        neighbours.push_back(cell_south(cell_index));
+    }
+    if (cell_east(cell_index) != -1) {
+        neighbours.push_back(cell_east(cell_index));
+    }
+    if (cell_west(cell_index) != -1) {
+        neighbours.push_back(cell_west(cell_index));
+    }
+    if (cell_north_east(cell_index) != -1) {
+        neighbours.push_back(cell_north_east(cell_index));
+    }
+    if (cell_north_west(cell_index) != -1) {
+        neighbours.push_back(cell_north_west(cell_index));
+    }
+    if (cell_south_east(cell_index) != -1) {
+        neighbours.push_back(cell_south_east(cell_index));
+    }
+    if (cell_south_west(cell_index) != -1) {
+        neighbours.push_back(cell_south_west(cell_index));
+    }
+
+    /*LOG("neighbour count: %zu", neighbours.size());*/
+    return neighbours;
+}
+std::vector<uint> Grid::get_neighbours(Cell* cell) {
+    return get_neighbours(
+        std::find(cells.begin(), cells.end(), cell) - cells.begin()
+    );
 }
 

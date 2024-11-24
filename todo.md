@@ -52,7 +52,7 @@ current node.
 
 Choose the path with the lowest f(n)
 
-Find neighbouring cells
+-- Find neighbouring cells
 
 Ideas on how to store path:
     just a simple vector of Cell* nodes

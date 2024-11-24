@@ -4,7 +4,7 @@
 #include "engine.hpp"
 
 struct Cell : public Rect {
-    bool empty = true;
+    bool traversable = true;
 
     Cell(Transform transform) : Rect(transform) {}
 };
@@ -27,6 +27,23 @@ public:
     void add_to_scene();
     void delete_cells();
 
+    size_t cell_count() const {
+        return cells.size();
+    }
+
+    // returns -1 if no cell exists
+    int cell_north(uint cell_index) const;
+    int cell_south(uint cell_index) const;
+    int cell_east(uint cell_index) const;
+    int cell_west(uint cell_index) const;
+    int cell_north_east(uint cell_index) const;
+    int cell_north_west(uint cell_index) const;
+    int cell_south_east(uint cell_index) const;
+    int cell_south_west(uint cell_index) const;
+
+    std::vector<uint> get_neighbours(uint cell_index);
+    std::vector<uint> get_neighbours(Cell* cell);
+
 private:
     // probably not the best way to do this
     Scene& _scene = engine::get_scene();
@@ -48,15 +65,5 @@ private:
     std::array<int, 8> _direction_offsets;
 
     void update_direction_offsets();
-
-    // return -1 if no cell exists
-    int cell_north(uint cell_index);
-    int cell_south(uint cell_index);
-    int cell_east(uint cell_index);
-    int cell_west(uint cell_index);
-    int cell_north_east(uint cell_index);
-    int cell_north_west(uint cell_index);
-    int cell_south_east(uint cell_index);
-    int cell_south_west(uint cell_index);
 };
 

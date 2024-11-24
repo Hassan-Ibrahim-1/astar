@@ -1,4 +1,5 @@
 #include "engine.hpp"
+#include "path.hpp"
 #include "grid.hpp"
 
 class App : public Application {
@@ -13,5 +14,6 @@ public:
     Rect boundary;
     uint ncells = 100;
     Grid grid;
+    Path path;
 };
 

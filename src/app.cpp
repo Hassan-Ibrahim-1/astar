@@ -9,11 +9,15 @@ void App::init() {
     /*rect.transform.position.x = 1;*/
     /*rect.transform.rotation.yaw = 90;*/
 
-    /*rect.set_fill(false);*/
     grid.create_cells(ncells);
     grid.add_to_scene();
     camera.transform.position.z = 1.3;
     camera.lock();
+    grid.cells[5]->set_fill(true);
+    grid.cells[38]->set_fill(true);
+
+    path.trace(grid.cells[5], grid.cells[38], grid);
+
 }
 
 void App::update() {
@@ -28,13 +32,11 @@ void App::update() {
         }
         auto mp = input::get_mouse_pos();
         ImGui::Text("mouse pos (%f, %f)", mp.x, mp.y);
-    }
-    // left click to highlight, right click to remove
-    if (engine::cursor_enabled) {
+
+        // left click to highlight, right click to remove
         if (input::mouse_button_down(MouseButton::ANY)) {
             for (auto cell : grid.cells) {
                 if (utils::mouse_in_rect(*cell)) {
-                    LOG("filled");
                     if (input::mouse_button_down(MouseButton::LEFT)) {
                         cell->set_fill(true);
                     }
