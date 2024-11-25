@@ -70,3 +70,5 @@ Do at least on demo of the algorithm. render each step.
 Use a time step maybe? do one bit at a time. click based?
 Make an animation with the paths joining up as well
 
+Algo seems messed up. Tests every cell? why?
+

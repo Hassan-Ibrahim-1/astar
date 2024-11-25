@@ -21,7 +21,7 @@ public:
 
     float current_time = 0;
     float start_time = 0;
-    float time_threshold = 0.5;
+    float time_threshold = 0.02;
 
     // TODO: get rid of this later. super hacky
     void clear_path_cells();

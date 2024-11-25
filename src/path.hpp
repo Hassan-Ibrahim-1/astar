@@ -10,6 +10,7 @@ public:
 
     void trace(Cell* start, Cell* end, Grid& grid);
     void update(Grid& grid);
+    void render(Grid& grid);
 
 private:
     struct PathNode {

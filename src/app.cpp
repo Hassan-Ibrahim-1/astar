@@ -31,8 +31,10 @@ void App::update() {
     target_cell->set_fill(true);
     current_time = glfwGetTime();
     if (current_time - start_time > time_threshold) {
+        start_time = current_time;
         path.update(grid);
     }
+    path.render(grid);
 
     if (engine::cursor_enabled) {
         if (utils::imgui_rect("boundary", grid.boundary)
@@ -77,8 +79,7 @@ void App::cleanup() {
 
 void App::clear_path_cells() {
     for (auto cell : grid.cells) {
-        if (cell->material.color == Color(255, 0, 0) || cell->material.color == Color(0, 255, 0)) {
-            LOG("clearing cell");
+        if (cell->material.color != Color(255)) {
             cell->material.color = Color(255);
             cell->set_fill(false);
         }

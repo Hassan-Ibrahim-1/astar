@@ -91,6 +91,12 @@ void Path::trace(Cell* start_cell, Cell* target_cell, Grid& grid) {
 
 void Path::update(Grid& grid) {
     PathNode* current = nullptr;
+
+    if (_path_nodes[_target_index].parent_index != -1) {
+        LOG("PATH FOUND");
+        return;
+    }
+
     if (!_open.empty()) {
         current = lowest_cost_open_node();
         _open.erase(_open.begin() + open_node_index(*current));
@@ -100,6 +106,7 @@ void Path::update(Grid& grid) {
             // TODO: make this a break
             return;
         }
+
 
         auto neighbours = grid.get_neighbours(current->cell_index);
         for (uint neighbour : neighbours) {
@@ -135,9 +142,10 @@ void Path::update(Grid& grid) {
             }
         }
     }
+}
 
-
-    if (_open.empty()) {
+void Path::render(Grid& grid) {
+    if (_path_nodes[_target_index].parent_index != -1) {
         int index = _path_nodes[_target_index].parent_index;
         while (grid.cells[index] != start) {
             PathNode& node = _path_nodes[index];
