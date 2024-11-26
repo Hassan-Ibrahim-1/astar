@@ -55,8 +55,8 @@ in vec2 tex_coord;
 out vec4 FragColor;
 
 #define MAX_POINT_LIGHTS 4
-#define MAX_SPOT_LIGHTS  1
-#define MAX_DIR_LIGHTS   1
+#define MAX_SPOT_LIGHTS  4
+#define MAX_DIR_LIGHTS   4
 
 // How many point lights are actually in use
 uniform uint n_point_lights_used;
