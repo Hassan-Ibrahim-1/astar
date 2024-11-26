@@ -105,6 +105,7 @@ void utils::imgui_line(const std::string& name, Line& line) {
 void utils::imgui_game_object(const std::string& name, GameObject& obj) {
     imgui_color_edit3(name, obj.material.color);
     imgui_transform(name, obj.transform);
+    ImGui::Checkbox((name + " hidden").c_str(), &obj.hidden);
 }
 
 void utils::imgui_light(const std::string& name, Light& light) {

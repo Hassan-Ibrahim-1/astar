@@ -44,6 +44,7 @@ void Grid::create_cells(uint ncells) {
         for (uint j = 0; j < _cols; j++) {
             cells.push_back(new Cell(cell_t));
             cells.back()->set_fill(false);
+            cells.back()->transform.rotation = boundary.transform.rotation;
             cell_t.position.x += cell_t.scale.x;
         }
         cell_t.position.x = original_xpos;

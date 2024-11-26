@@ -1,6 +1,7 @@
 #include "app.hpp"
 #include "debug.hpp"
 #include "engine.hpp"
+#include "imgui.h"
 #include "input.hpp"
 #include "utils.hpp"
 
@@ -9,9 +10,11 @@ void App::init() {
     /*rect.transform.position.x = 1;*/
     /*rect.transform.rotation.yaw = 90;*/
 
-    /*grid.create_cells(ncells);*/
-    /*grid.add_to_scene();*/
+    grid.boundary.transform.rotation = 90;
+    grid.create_cells(ncells);
+    grid.add_to_scene();
 
+    camera.velocity = 14;
     camera.transform.position.x = -1.2;
     camera.transform.position.y = 4;
     camera.transform.position.z = 15;
@@ -27,13 +30,28 @@ void App::init() {
     /**/
     /*path.trace(start_cell, target_cell, grid);*/
 
+    light.position.y = 20;
+    light.constant = 0.12;
+    light.linear = 0.033;
+    light.quadratic = 0.010;
+    scene.add_point_light(&light);
+
     capsule_model.load("models/capsule/capsule.obj");
     capsule.load_mesh_data(capsule_model);
+    capsule.material.color = Color(255, 141, 141);
     scene.add_game_object(&capsule);
 
-    light.position.y = 7;
-    light.linear = 0.69;
-    scene.add_point_light(&light);
+
+    cube.transform.scale = glm::vec3(50, 1, 50);
+    cube.transform.position.y = -2.6;
+    scene.add_primitive(&cube);
+
+    end_point.material.color = Color(0, 255, 0);
+    end_point.transform.position = glm::vec3(17, -0.8, 0);
+    scene.add_primitive(&end_point);
+    
+    delete &rect;
+    /*scene.add_primitive(&rect);*/
 }
 
 void App::update() {
@@ -47,8 +65,14 @@ void App::update() {
         auto mp = input::get_mouse_pos();
         ImGui::Text("mouse pos (%f, %f)", mp.x, mp.y);
 
-        utils::imgui_game_object("capsule", capsule);
         utils::imgui_point_light("light", light);
+        ImGui::Spacing();
+        utils::imgui_game_object("capsule", capsule);
+        ImGui::Spacing();
+        utils::imgui_cube("cube", cube);
+        ImGui::Spacing();
+        utils::imgui_cube("end", end_point);
+        ImGui::Spacing();
 
         return;
 

@@ -76,7 +76,11 @@ figure out how to automatically detect a cube in the way for example.
     - vector of cubes passes into a function. read their x and z coordinates and map
       them to their grid cell.
 
-x and z instead of y
+ignore the y component;
+
+create a grid using the size of the ground.
+Figure out what ncells should be based on the scale of the ground
+
 
 The way obstacles are handled is dumb. if the target moves over them they disappear but are still
 not traversable. 
