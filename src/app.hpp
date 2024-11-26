@@ -12,7 +12,7 @@ public:
 
     /*Rect& rect = *new Rect;*/
     Rect boundary;
-    uint ncells = 513;
+    uint ncells = 1014;
     Grid grid;
     Path path;
 

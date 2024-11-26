@@ -66,9 +66,9 @@ Fix the bug where clicking too far from start just crashses everything
 -- line blocking the start and target cells. there's still a path that's possible
 -- Probably something to do with diagonals
 
-Do at least on demo of the algorithm. render each step.
-Use a time step maybe? do one bit at a time. click based?
-Make an animation with the paths joining up as well
+-- Do at least on demo of the algorithm. render each step.
+-- Use a time step maybe? do one bit at a time. click based?
+-- Make an animation with the paths joining up as well
 
 Algo seems messed up. Tests every cell? why?
 

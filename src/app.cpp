@@ -14,7 +14,7 @@ void App::init() {
     camera.transform.position.z = 1.3;
     camera.lock();
 
-    target_cell = grid.cells[213];
+    target_cell = grid.cells[713];
     start_cell = grid.cells[5];
 
     start_cell->set_fill(true);
