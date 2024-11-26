@@ -45,11 +45,13 @@ void App::update() {
                     if (input::mouse_button_down(MouseButton::LEFT)) {
                         clear_path_cells();
                         target_cell->set_fill(false);
+                        target_cell->material.color = Color(255);
                         target_cell = cell;
                         start_cell->set_fill(true);
 
                         path.trace(start_cell, target_cell, grid);
                         cell->set_fill(true);
+                        cell->material.color = Color(0, 255, 0);
                     }
                     else if (input::mouse_button_down(MouseButton::RIGHT)) {
                         clear_path_cells();

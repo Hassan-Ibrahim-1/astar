@@ -37,7 +37,7 @@ void Path::trace(Cell* start_cell, Cell* target_cell, Grid& grid) {
         _open.erase(_open.begin() + open_node_index(*current));
         _closed.emplace_back(current);
 
-        if (current->cell_index == target_index) {
+        if (_path_nodes[target_index].parent_index != -1) {
             break;
         }
 
@@ -75,7 +75,7 @@ void Path::trace(Cell* start_cell, Cell* target_cell, Grid& grid) {
             }
         }
     }
-    if (_open.empty()) {
+    if (_path_nodes[target_index].parent_index == -1) {
         return;
     }
     int index = _path_nodes[target_index].parent_index;
