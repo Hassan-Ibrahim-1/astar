@@ -66,7 +66,18 @@ Fix the bug where clicking too far from start just crashses everything
 -- line blocking the start and target cells. there's still a path that's possible
 -- Probably something to do with diagonals
 
-Do at least on demo of the algorithm. render each step.
-Use a time step maybe? do one bit at a time. click based?
-Make an animation with the paths joining up as well
+-- Do at least on demo of the algorithm. render each step.
+-- Use a time step maybe? do one bit at a time. click based?
+-- Make an animation with the paths joining up as well
+
+3d movement. a capsule moving around on ground that can handle obstacles as well.
+start and end points
+figure out how to automatically detect a cube in the way for example.
+    - vector of cubes passes into a function. read their x and z coordinates and map
+      them to their grid cell.
+
+x and z instead of y
+
+The way obstacles are handled is dumb. if the target moves over them they disappear but are still
+not traversable. 
 

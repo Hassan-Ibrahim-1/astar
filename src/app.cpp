@@ -12,7 +12,7 @@ void App::init() {
     grid.create_cells(ncells);
     grid.add_to_scene();
     camera.transform.position.z = 1.3;
-    camera.lock();
+    /*camera.lock();*/
 
     target_cell = grid.cells[50];
     start_cell = grid.cells[5];
