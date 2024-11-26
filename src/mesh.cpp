@@ -19,9 +19,9 @@ Mesh::~Mesh() {
     if (_buffers_created) {
         delete_buffers();
     }
-    else {
-        reset_vao();
-    }
+    /*else {*/
+    /*    reset_vao();*/
+    /*}*/
 }
 
 uint Mesh::vao() const {

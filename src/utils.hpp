@@ -35,6 +35,7 @@ void imgui_cube(const std::string& name, Cube& cube);
 void imgui_sphere(const std::string& name, Sphere& sphere);
 void imgui_circle(const std::string& name, Circle& circle);
 void imgui_line(const std::string& name, Line& line);
+void imgui_game_object(const std::string& name, GameObject& obj);
 
 // Lights
 void imgui_light(const std::string& name, Light& light);

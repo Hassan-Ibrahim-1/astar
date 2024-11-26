@@ -19,8 +19,8 @@ public:
     glm::vec3 position = glm::vec3(0);
 
     float constant = 1;
-    float linear = 1;
-    float quadratic = 1;
+    float linear = 0.893;
+    float quadratic = 0.032;
 
     bool hidden = false;
 

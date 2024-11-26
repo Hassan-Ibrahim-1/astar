@@ -8,9 +8,6 @@ public:
     void update() override;
     void cleanup() override;
 
-    /*GameObject* obj = new GameObject;*/
-
-    /*Rect& rect = *new Rect;*/
     Rect boundary;
     uint ncells = 675;
     Grid grid;
@@ -18,6 +15,11 @@ public:
 
     Cell* target_cell = nullptr;
     Cell* start_cell = nullptr;
+
+    Model capsule_model;
+    GameObject& capsule = *new GameObject;
+
+    PointLight& light = *new PointLight;
 
     // TODO: get rid of this later. super hacky
     void clear_path_cells();

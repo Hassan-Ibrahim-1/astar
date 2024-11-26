@@ -22,7 +22,6 @@ void Scene::add_game_object(GameObject* game_object) {
     }
 
     game_object->set_id(generate_id());
-    LOG("adding game object with id: %u", game_object->get_id());
     game_objects.emplace_back(game_object);
 }
 void Scene::add_primitive(Cube* cube) {

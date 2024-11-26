@@ -1,5 +1,6 @@
 #pragma once
 
+#include "model.hpp"
 #include "transform.hpp"
 #include "material.hpp"
 #include "mesh.hpp"
@@ -22,6 +23,12 @@ public:
     uint mesh_count() {
         return meshes.size();
     }
+
+    // Just sets the meshes and draw commands
+    // from a Model keep this. only sets vaos
+    // doesn't copy mesh data. so don't delete the original
+    // vao / mesh
+    void load_mesh_data(const Model& model);
 
     void set_id(uint id) {
         _id = id;
