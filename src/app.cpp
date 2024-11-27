@@ -80,17 +80,20 @@ void App::init() {
     start_cell->material.color = Color(0, 0, 255);
     target_cell->material.color = Color(0, 255, 0);
     /**/
-    path.trace(start_cell, target_cell, grid);
-
+    auto tmp = path.trace(start_cell, target_cell, grid);
+    ASSERT(tmp.has_value(), "no path found");
+    cells = tmp.value();
 }
 
 void App::update() {
-
     /*grid.boundary.transform.rotation.pitch += sin(glfwGetTime());*/
     /*grid.boundary.transform.rotation.yaw += sin(glfwGetTime());*/
     /*grid.boundary.transform.rotation.roll += cos(glfwGetTime());*/
     /*grid.create_cells(ncells);*/
     /*grid.add_to_scene();*/
+
+    update_capsule_path();
+    update_capsule_pos();
 
     if (engine::cursor_enabled) {
         if (utils::imgui_rect("boundary", grid.boundary)
@@ -150,5 +153,25 @@ void App::clear_path_cells() {
             cell->set_fill(false);
         }
     }
+}
+
+void App::update_capsule_path() {
+    if (grid.find_cell(capsule.transform.position).value_or(nullptr) 
+        != cells[current_cell]) {
+        current_cell = current_cell++;
+    }
+    Cell& cell = *cells[current_cell];
+    auto cell_pos = cell.transform.position;
+    cell_pos.y = 0;
+    glm::vec3 dir = glm::normalize(
+        cell_pos - capsule.transform.position
+    );
+    capsule_velocity = 4.0f * dir;
+    capsule_velocity.y = 0;
+}
+
+void App::update_capsule_pos() {
+    // d = vt
+    capsule.transform.position += capsule_velocity * delta_time;
 }
 

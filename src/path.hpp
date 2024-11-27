@@ -8,7 +8,7 @@ public:
     Cell* start;
     Cell* target;
 
-    void trace(Cell* start, Cell* end, Grid& grid);
+    std::optional<std::vector<Cell*>> trace(Cell* start, Cell* end, Grid& grid);
 
 private:
     struct PathNode {

@@ -1,6 +1,6 @@
 #include "path.hpp"
 
-void Path::trace(Cell* start_cell, Cell* target_cell, Grid& grid) {
+std::optional<std::vector<Cell*>> Path::trace(Cell* start_cell, Cell* target_cell, Grid& grid) {
     ASSERT(start_cell != nullptr, "start_cell is a nullptr");
     ASSERT(target_cell != nullptr, "target_cell is a nullptr");
 
@@ -76,15 +76,19 @@ void Path::trace(Cell* start_cell, Cell* target_cell, Grid& grid) {
         }
     }
     if (_path_nodes[target_index].parent_index == -1) {
-        return;
+        return {};
     }
+    std::vector<Cell*> path;
     int index = _path_nodes[target_index].parent_index;
     while (index != start_index) {
         PathNode& node = _path_nodes[index];
-        grid.cells[node.cell_index]->set_fill(true);
-        grid.cells[node.cell_index]->material.color = Color(255, 0, 0);
+        Cell* cell = grid.cells[node.cell_index];
+        cell->set_fill(true);
+        cell->material.color = Color(255, 0, 0);
+        path.emplace_back(cell);
         index = node.parent_index;
     }
+    return path;
 }
 
 float Path::calculate_distance_to_target(Cell* cell) {

@@ -20,7 +20,14 @@ public:
     Cube& cube = *new Cube;
     Cube& end_point = *new Cube;
 
+    // Path traversal related stuff
+    uint current_cell = 0;
+    glm::vec3 capsule_velocity = {};
+    std::vector<Cell*> cells;
+
     // TODO: get rid of this later. super hacky
     void clear_path_cells();
+    void update_capsule_path();
+    void update_capsule_pos();
 };
 
