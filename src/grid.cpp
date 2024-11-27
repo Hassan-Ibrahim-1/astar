@@ -1,4 +1,6 @@
 #include "grid.hpp"
+#include "engine.hpp"
+#include "utils.hpp"
 
 void Grid::create_cells(uint ncells) {
     delete_cells();
@@ -20,15 +22,22 @@ void Grid::create_cells(uint ncells) {
     if (boundary.transform.scale.x > boundary.transform.scale.z) {
         _rows = f1 - 1;
         _cols = f2 - 1;
+        /*_rows = f1;*/
+        /*_cols = f2;*/
     }
     else {
         _rows = f2 - 1;
         _cols = f1 - 1;
+        /*_rows = f2;*/
+        /*_cols = f1;*/
     }
 
     update_direction_offsets();
 
     Transform cell_t = Transform();
+    cell_t.position.y = boundary.transform.position.y;
+    cell_t.rotation = boundary.transform.rotation;
+
     cell_t.scale.x = boundary.transform.scale.x / _cols;
     cell_t.scale.z = boundary.transform.scale.z / _rows;
 
@@ -47,10 +56,11 @@ void Grid::create_cells(uint ncells) {
         for (uint j = 0; j < _cols; j++) {
             cells.push_back(new Cell(cell_t));
             cells.back()->set_fill(false);
-            cells.back()->transform.rotation = boundary.transform.rotation;
+            /*cells.back()->transform.rotation = boundary.transform.rotation;*/
             /*auto& texture = cells.back()->material.create_diffuse_texture();*/
             /*texture = Texture2D(_cat.ID, TextureType::DIFFUSE);*/
             cell_t.position.x += cell_t.scale.x;
+            cells.back()->material.shader = &engine::get_renderer().shaders.basic_mesh;
         }
         cell_t.position.x = original_xpos;
         cell_t.position.z -= cell_t.scale.z;
@@ -201,5 +211,17 @@ std::vector<uint> Grid::get_neighbours(Cell* cell) {
     return get_neighbours(
         std::find(cells.begin(), cells.end(), cell) - cells.begin()
     );
+}
+
+std::optional<Cell*> Grid::find_cell(const glm::vec3& position) {
+    for (auto c : cells) {
+        if (utils::point_in_rect(
+            *c,
+            glm::vec2(position.x, position.z)
+        )) {
+            return c;
+        }
+    }
+    return {};
 }
 

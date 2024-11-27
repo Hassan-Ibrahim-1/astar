@@ -45,6 +45,8 @@ public:
 
     std::vector<uint> get_neighbours(uint cell_index);
     std::vector<uint> get_neighbours(Cell* cell);
+    // Finds cell based on a provided x and z
+    std::optional<Cell*> find_cell(const glm::vec3& position);
 
 private:
     // probably not the best way to do this
@@ -64,7 +66,7 @@ private:
         SOUTH_WEST
     };
 
-    Texture2D _cat;
+    /*Texture2D _cat;*/
 
     std::array<int, 8> _direction_offsets;
 

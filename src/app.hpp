@@ -20,8 +20,6 @@ public:
     Cube& cube = *new Cube;
     Cube& end_point = *new Cube;
 
-    Rect& rect = *new Rect;
-
     // TODO: get rid of this later. super hacky
     void clear_path_cells();
 };

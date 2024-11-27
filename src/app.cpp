@@ -10,24 +10,19 @@ void App::init() {
     /*rect.transform.position.x = 1;*/
     /*rect.transform.rotation.yaw = 90;*/
 
-    grid.boundary.transform.rotation = {
-        -82,
-        90,
-        -124
-    };
+    /*grid.boundary.transform.rotation = {*/
+    /*    -82,*/
+    /*    90,*/
+    /*    -124*/
+    /*};*/
+    /**/
+    /*grid.boundary.transform.scale = { */
+    /*    8.2,*/
+    /*    1,*/
+    /*    8.6*/
+    /*};*/
 
-    grid.boundary.transform.scale = { 
-        8.2,
-        1,
-        8.6
-    };
-
-    grid.boundary.transform.rotation.pitch = 90;
-    grid.create_cells(ncells);
-    grid.add_to_scene();
-    grid.boundary.set_fill(false);
-
-    camera.velocity = 14;
+    camera.velocity = 20;
     camera.transform.position.x = -1.2;
     camera.transform.position.y = 4;
     camera.transform.position.z = 15;
@@ -47,33 +42,52 @@ void App::init() {
     light.constant = 0.12;
     light.linear = 0.033;
     light.quadratic = 0.010;
-    /*scene.add_point_light(&light);*/
+    scene.add_point_light(&light);
 
     capsule_model.load("models/capsule/capsule.obj");
     capsule.load_mesh_data(capsule_model);
     capsule.material.color = Color(255, 141, 141);
+    scene.add_game_object(&capsule);
     /*capsule.hidden = true;*/
-    /*scene.add_game_object(&capsule);*/
 
     cube.transform.scale = glm::vec3(50, 1, 50);
     cube.transform.position.y = -2.6;
-    /*scene.add_primitive(&cube);*/
+    scene.add_primitive(&cube);
 
     end_point.material.color = Color(0, 255, 0);
     end_point.transform.position = glm::vec3(17, -0.8, 0);
-    /*scene.add_primitive(&end_point);*/
-    
+    scene.add_primitive(&end_point);
 
-    /*scene.add_primitive(&rect);*/
+    grid.boundary.transform = cube.transform;
+    grid.boundary.transform.position.y += cube.transform.scale.y;
+    // HACK: adding one to z fixes the misalignment between 
+    // the grid and the cube. idk why its misaligned in the first
+    // place tho
+    grid.boundary.transform.position.z += 1;
+    grid.boundary.transform.rotation.pitch = 90;
+    grid.create_cells(ncells);
+    grid.add_to_scene();
+    grid.boundary.set_fill(false);
+
+    start_cell = grid.find_cell(capsule.transform.position).value_or(nullptr);
+    ASSERT(start_cell, "no cell found for capsule");
+
+    start_cell->set_fill(true);
+    /*target_cell->set_fill(true);*/
+    start_cell->material.color = Color(0, 0, 255);
+    /*target_cell->material.color = Color(0, 255, 0);*/
+    /**/
+    /*path.trace(start_cell, target_cell, grid);*/
+
 }
 
 void App::update() {
 
-    grid.boundary.transform.rotation.pitch += sin(glfwGetTime());
+    /*grid.boundary.transform.rotation.pitch += sin(glfwGetTime());*/
     /*grid.boundary.transform.rotation.yaw += sin(glfwGetTime());*/
     /*grid.boundary.transform.rotation.roll += cos(glfwGetTime());*/
-    grid.create_cells(ncells);
-    grid.add_to_scene();
+    /*grid.create_cells(ncells);*/
+    /*grid.add_to_scene();*/
 
     if (engine::cursor_enabled) {
         if (utils::imgui_rect("boundary", grid.boundary)

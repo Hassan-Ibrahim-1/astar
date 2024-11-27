@@ -52,6 +52,7 @@ void add_to_imgui(Transform& transform);
 bool mouse_in_circle(glm::vec3 position, float radius);
 bool mouse_in_circle(Circle& circle);
 
+bool point_in_rect(const Rect& rect, const glm::vec2& p);
 bool mouse_in_rect(const Rect& rect);
 
 // This is a horrible function

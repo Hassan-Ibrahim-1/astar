@@ -78,8 +78,7 @@ figure out how to automatically detect a cube in the way for example.
 
 ignore the y component;
 
-create a grid using the size of the ground.
-Figure out what ncells should be based on the scale of the ground
+-- create a grid using the size of the ground.
 
 
 The way obstacles are handled is dumb. if the target moves over them they disappear but are still

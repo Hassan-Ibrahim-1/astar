@@ -187,6 +187,23 @@ bool utils::mouse_in_rect(const Rect& rect) {
      && (mouse_p.y < start_y && mouse_p.y > end_y);
 }
 
+bool utils::point_in_rect(const Rect& rect, const glm::vec2& p) {
+    // Top left
+    float start_x = rect.transform.position.x - (rect.transform.scale.x / 2);
+    float start_y = rect.transform.position.z + (rect.transform.scale.z / 2);
+    // HACK: this fixes rect y being bs
+    start_y *= 2; 
+    // Bottom right
+    float end_x = rect.transform.position.x + (rect.transform.scale.x / 2);
+    float end_y = rect.transform.position.z - (rect.transform.scale.z / 2);
+    // HACK: this fixes rect y being bs
+    end_y *= 2;
+
+    return 
+        (p.x > start_x && p.x < end_x)
+     && (p.y < start_y && p.y > end_y);
+}
+
 std::vector<u8> utils::color3_vector_to_u8_vector(std::vector<Color3>& vec) {
     std::vector<u8> data;
     for (const auto& color : vec) {
