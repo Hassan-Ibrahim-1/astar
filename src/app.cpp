@@ -72,12 +72,15 @@ void App::init() {
     start_cell = grid.find_cell(capsule.transform.position).value_or(nullptr);
     ASSERT(start_cell, "no cell found for capsule");
 
+    target_cell = grid.find_cell(end_point.transform.position).value_or(nullptr);
+    ASSERT(target_cell, "no cell found for end point");
+
     start_cell->set_fill(true);
-    /*target_cell->set_fill(true);*/
+    target_cell->set_fill(true);
     start_cell->material.color = Color(0, 0, 255);
-    /*target_cell->material.color = Color(0, 255, 0);*/
+    target_cell->material.color = Color(0, 255, 0);
     /**/
-    /*path.trace(start_cell, target_cell, grid);*/
+    path.trace(start_cell, target_cell, grid);
 
 }
 

@@ -188,6 +188,11 @@ bool utils::mouse_in_rect(const Rect& rect) {
 }
 
 bool utils::point_in_rect(const Rect& rect, const glm::vec2& p) {
+    // NOTE: this function uses z values in place of y values
+    // because thats what Grid needs when flat
+
+
+
     // Top left
     float start_x = rect.transform.position.x - (rect.transform.scale.x / 2);
     float start_y = rect.transform.position.z + (rect.transform.scale.z / 2);
