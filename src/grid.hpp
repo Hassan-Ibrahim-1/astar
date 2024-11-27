@@ -17,7 +17,7 @@ public:
     std::vector<Cell*> cells;
 
     Grid() {
-        _cat = Texture2D("textures/bebe.jpg", TextureType::DIFFUSE);
+        /*_cat = Texture2D("textures/bebe.jpg", TextureType::DIFFUSE);*/
     }
     Grid(uint ncells) {
         create_cells(ncells);

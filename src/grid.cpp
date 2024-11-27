@@ -46,10 +46,10 @@ void Grid::create_cells(uint ncells) {
     for (uint i = 0; i < _rows; i++) {
         for (uint j = 0; j < _cols; j++) {
             cells.push_back(new Cell(cell_t));
-            cells.back()->set_fill(true);
+            cells.back()->set_fill(false);
             cells.back()->transform.rotation = boundary.transform.rotation;
-            auto& texture = cells.back()->material.create_diffuse_texture();
-            texture = Texture2D(_cat.ID, TextureType::DIFFUSE);
+            /*auto& texture = cells.back()->material.create_diffuse_texture();*/
+            /*texture = Texture2D(_cat.ID, TextureType::DIFFUSE);*/
             cell_t.position.x += cell_t.scale.x;
         }
         cell_t.position.x = original_xpos;
