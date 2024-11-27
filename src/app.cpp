@@ -10,6 +10,18 @@ void App::init() {
     /*rect.transform.position.x = 1;*/
     /*rect.transform.rotation.yaw = 90;*/
 
+    grid.boundary.transform.rotation = {
+        -82,
+        90,
+        -124
+    };
+
+    grid.boundary.transform.scale = { 
+        8.2,
+        1,
+        8.6
+    };
+
     grid.boundary.transform.rotation.pitch = 90;
     grid.create_cells(ncells);
     grid.add_to_scene();
@@ -51,18 +63,24 @@ void App::init() {
     end_point.transform.position = glm::vec3(17, -0.8, 0);
     /*scene.add_primitive(&end_point);*/
     
+
     /*scene.add_primitive(&rect);*/
 }
 
 void App::update() {
+
+    grid.boundary.transform.rotation.pitch += sin(glfwGetTime());
+    grid.boundary.transform.rotation.yaw += cos(glfwGetTime());
+    /*grid.boundary.transform.rotation.roll += sin(glfwGetTime());*/
+    grid.create_cells(ncells);
+    grid.add_to_scene();
+
     if (engine::cursor_enabled) {
-        utils::imgui_rect("boundary", grid.boundary);
-        /* || ImGui::DragInt("ncells", (int*)&ncells, 1, 0)
-        /*if (utils::imgui_rect("boundary", grid.boundary)*/
-        /* || ImGui::DragInt("ncells", (int*)&ncells, 1, 0)) {*/
-        /*    grid.create_cells(ncells);*/
-        /*    grid.add_to_scene();*/
-        /*}*/
+        if (utils::imgui_rect("boundary", grid.boundary)
+         || ImGui::DragInt("ncells", (int*)&ncells, 1, 0)) {
+            grid.create_cells(ncells);
+            grid.add_to_scene();
+        }
 
         auto mp = input::get_mouse_pos();
         ImGui::Text("mouse pos (%f, %f)", mp.x, mp.y);

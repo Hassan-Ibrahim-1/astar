@@ -13,6 +13,9 @@ void Grid::create_cells(uint ncells) {
     _rows = 0;
     _cols = 0;
 
+    // NOTE: if you wanna change this back to the vertical grid
+    // sub out ALL z's for y's
+
     // put the larger factor amount of cells on the larger side
     if (boundary.transform.scale.x > boundary.transform.scale.z) {
         _rows = f1 - 1;
@@ -56,7 +59,7 @@ void Grid::add_to_scene() {
     for (auto& cell : cells) {
         _scene.add_primitive(cell);
     }
-    _scene.add_primitive(&boundary);
+    /*_scene.add_primitive(&boundary);*/
 }
 
 void Grid::delete_cells() {

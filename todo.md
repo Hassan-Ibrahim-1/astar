@@ -85,3 +85,6 @@ Figure out what ncells should be based on the scale of the ground
 The way obstacles are handled is dumb. if the target moves over them they disappear but are still
 not traversable. 
 
+# DO THIS LATER
+FIX ROTATION - use x,y,z instead of yaw pitch and roll
+
