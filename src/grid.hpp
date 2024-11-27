@@ -12,7 +12,7 @@ struct Cell : public Rect {
 class Grid {
 public:
     // NOTE: boundary is never rendered becase it doesn't have to be
-    Rect boundary;
+    Rect& boundary = *new Rect;
     // Probably doesn't have to be heap allocated
     std::vector<Cell*> cells;
 

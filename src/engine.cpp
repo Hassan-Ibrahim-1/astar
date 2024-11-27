@@ -250,5 +250,6 @@ void engine::cleanup() {
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
     glfwTerminate();
+    LOG("TERMINATED");
 }
 

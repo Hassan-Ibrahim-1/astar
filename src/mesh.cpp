@@ -88,7 +88,7 @@ void Mesh::reset_vao() {
 }
 
 void Mesh::delete_buffers() {
-    ASSERT(!_vao_ready, "Tried to delete a VAO that is not created by this mesh.");
+    ASSERT(_buffers_created, "Tried to delete a VAO that is not created by this mesh.");
     glDeleteVertexArrays(1, &_vao);
     glDeleteBuffers(1, &_ebo);
     glDeleteBuffers(1, &_vbo);

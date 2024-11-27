@@ -14,7 +14,7 @@ void Grid::create_cells(uint ncells) {
     _cols = 0;
 
     // put the larger factor amount of cells on the larger side
-    if (boundary.transform.scale.x > boundary.transform.scale.y) {
+    if (boundary.transform.scale.x > boundary.transform.scale.z) {
         _rows = f1 - 1;
         _cols = f2 - 1;
     }
@@ -27,7 +27,7 @@ void Grid::create_cells(uint ncells) {
 
     Transform cell_t = Transform();
     cell_t.scale.x = boundary.transform.scale.x / _cols;
-    cell_t.scale.y = boundary.transform.scale.y / _rows;
+    cell_t.scale.z = boundary.transform.scale.z / _rows;
 
     // make cell go to the upper left corner
     cell_t.position.x = (-0.5 * boundary.transform.scale.x) + boundary.transform.position.x;
@@ -35,8 +35,8 @@ void Grid::create_cells(uint ncells) {
     cell_t.position.x += (cell_t.scale.x / 2);
 
     // - here to make the cell go downwards - opposite of vao coordinate
-    cell_t.position.y = (0.5 * boundary.transform.scale.y) + boundary.transform.position.y;
-    cell_t.position.y -= (cell_t.scale.y / 2);
+    cell_t.position.z = (0.5 * boundary.transform.scale.z) + boundary.transform.position.z;
+    cell_t.position.z -= (cell_t.scale.z);
 
     float original_xpos = cell_t.position.x;
 
@@ -48,7 +48,7 @@ void Grid::create_cells(uint ncells) {
             cell_t.position.x += cell_t.scale.x;
         }
         cell_t.position.x = original_xpos;
-        cell_t.position.y -= cell_t.scale.y;
+        cell_t.position.z -= cell_t.scale.z;
     }
 }
 
@@ -56,6 +56,7 @@ void Grid::add_to_scene() {
     for (auto& cell : cells) {
         _scene.add_primitive(cell);
     }
+    _scene.add_primitive(&boundary);
 }
 
 void Grid::delete_cells() {
