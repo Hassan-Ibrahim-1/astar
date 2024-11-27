@@ -16,7 +16,9 @@ public:
     // Probably doesn't have to be heap allocated
     std::vector<Cell*> cells;
 
-    Grid() {}
+    Grid() {
+        _cat = Texture2D("textures/bebe.jpg", TextureType::DIFFUSE);
+    }
     Grid(uint ncells) {
         create_cells(ncells);
     }
@@ -61,6 +63,8 @@ private:
         SOUTH_EAST,
         SOUTH_WEST
     };
+
+    Texture2D _cat;
 
     std::array<int, 8> _direction_offsets;
 

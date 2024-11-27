@@ -70,8 +70,8 @@ void App::init() {
 void App::update() {
 
     grid.boundary.transform.rotation.pitch += sin(glfwGetTime());
-    grid.boundary.transform.rotation.yaw += cos(glfwGetTime());
-    /*grid.boundary.transform.rotation.roll += sin(glfwGetTime());*/
+    grid.boundary.transform.rotation.yaw += sin(glfwGetTime());
+    /*grid.boundary.transform.rotation.roll += cos(glfwGetTime());*/
     grid.create_cells(ncells);
     grid.add_to_scene();
 
