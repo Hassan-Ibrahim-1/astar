@@ -69,20 +69,7 @@ void App::init() {
     grid.add_to_scene();
     grid.boundary.set_fill(false);
 
-    start_cell = grid.find_cell(capsule.transform.position).value_or(nullptr);
-    ASSERT(start_cell, "no cell found for capsule");
-
-    target_cell = grid.find_cell(end_point.transform.position).value_or(nullptr);
-    ASSERT(target_cell, "no cell found for end point");
-
-    start_cell->set_fill(true);
-    target_cell->set_fill(true);
-    start_cell->material.color = Color(0, 0, 255);
-    target_cell->material.color = Color(0, 255, 0);
-    /**/
-    auto tmp = path.trace(start_cell, target_cell, grid);
-    ASSERT(tmp.has_value(), "no path found");
-    cells = tmp.value();
+    create_path();
 }
 
 void App::update() {
@@ -96,18 +83,23 @@ void App::update() {
     update_capsule_pos();
 
     if (engine::cursor_enabled) {
-        if (utils::imgui_rect("boundary", grid.boundary)
-         || ImGui::DragInt("ncells", (int*)&ncells, 1, 0)) {
-            grid.create_cells(ncells);
-            grid.add_to_scene();
+        if (utils::imgui_game_object("capsule", capsule)) {
+            clear_path_cells();
+            LOG("recreating path");
+            create_path();
         }
+        ImGui::Spacing();
+
+        /*if (utils::imgui_rect("boundary", grid.boundary)*/
+        /* || ImGui::DragInt("ncells", (int*)&ncells, 1, 0)) {*/
+        /*    grid.create_cells(ncells);*/
+        /*    grid.add_to_scene();*/
+        /*}*/
 
         auto mp = input::get_mouse_pos();
         ImGui::Text("mouse pos (%f, %f)", mp.x, mp.y);
 
         utils::imgui_point_light("light", light);
-        ImGui::Spacing();
-        utils::imgui_game_object("capsule", capsule);
         ImGui::Spacing();
         utils::imgui_cube("cube", cube);
         ImGui::Spacing();
@@ -146,6 +138,32 @@ void App::update() {
 void App::cleanup() {
 }
 
+void App::create_path() {
+    if (start_cell && target_cell) {
+        start_cell->set_fill(false);
+        target_cell->set_fill(false);
+        start_cell->material.color = Color(255);
+        target_cell->material.color = Color(255);
+    }
+
+    start_cell = grid.find_cell(capsule.transform.position).value_or(nullptr);
+    ASSERT(start_cell, "no cell found for capsule");
+
+    target_cell = grid.find_cell(end_point.transform.position).value_or(nullptr);
+    ASSERT(target_cell, "no cell found for end point");
+
+    start_cell->set_fill(true);
+    start_cell->material.color = Color(0, 0, 255);
+    target_cell->set_fill(true);
+    target_cell->material.color = Color(0, 255, 0);
+
+    auto tmp = path.trace(start_cell, target_cell, grid);
+    ASSERT(tmp.has_value(), "no path found");
+    cells = tmp.value();
+    current_cell = 0;
+    capsule_velocity = {0, 0, 0};
+}
+
 void App::clear_path_cells() {
     for (auto cell : grid.cells) {
         if (cell->material.color == Color(255, 0, 0)) {
@@ -156,8 +174,13 @@ void App::clear_path_cells() {
 }
 
 void App::update_capsule_path() {
-    if (grid.find_cell(capsule.transform.position).value_or(nullptr) 
-        != cells[current_cell]) {
+    auto actual_cell = grid.find_cell(capsule.transform.position).value_or(nullptr);
+    if (actual_cell == nullptr) {
+        capsule_velocity = {0, 0, 0};
+        return;
+    }
+    else if (actual_cell != cells[current_cell]) {
+        // What
         current_cell = current_cell++;
     }
     Cell& cell = *cells[current_cell];

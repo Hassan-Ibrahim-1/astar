@@ -25,6 +25,7 @@ public:
     glm::vec3 capsule_velocity = {};
     std::vector<Cell*> cells;
 
+    void create_path();
     // TODO: get rid of this later. super hacky
     void clear_path_cells();
     void update_capsule_path();

@@ -102,10 +102,12 @@ void utils::imgui_line(const std::string& name, Line& line) {
     ImGui::DragFloat3((name + "p2 pos").c_str(), (float*)&line.p2.position);
 }
 
-void utils::imgui_game_object(const std::string& name, GameObject& obj) {
+bool utils::imgui_game_object(const std::string& name, GameObject& obj) {
+    bool transform_changed = false;
     imgui_color_edit3(name, obj.material.color);
-    imgui_transform(name, obj.transform);
+    transform_changed = imgui_transform(name, obj.transform);
     ImGui::Checkbox((name + " hidden").c_str(), &obj.hidden);
+    return transform_changed;
 }
 
 void utils::imgui_light(const std::string& name, Light& light) {
