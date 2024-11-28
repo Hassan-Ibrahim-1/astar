@@ -84,14 +84,15 @@ ignore the y component;
 The way obstacles are handled is dumb. if the target moves over them they disappear but are still
 not traversable. 
 
+-- If the capsule is moved out of the grid, it still keeps moving
+-- even though theres a check that sets velocity to 0 when its supposed to 
+-- be out of the grid. find_cells seems to be returning something even
+-- when it isn't supposed to. might be point_in_rect. have to check
 
-# THIS NEXT 
-If the capsule is moved out of the grid, it still keeps moving
-even though theres a check that sets velocity to 0 when its supposed to 
-be out of the grid. find_cells seems to be returning something even
-when it isn't supposed to. might be point_in_rect. have to check
+-- find_cell does not work returns cells that are closer to the center
 
-find_cell does not work returns cells that are closer to the center
+## NEXT
+add automatic obstacle detection for cubes. should work with scale as well
 
 # DO THIS LATER
 FIX ROTATION - use x,y,z instead of yaw pitch and roll

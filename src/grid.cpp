@@ -225,3 +225,23 @@ std::optional<Cell*> Grid::find_cell(const glm::vec3& position) {
     return {};
 }
 
+std::vector<Cell*> Grid::find_all_cells(const Transform& transform) {
+    float start_x = transform.position.x - (transform.scale.x / 2);
+    float start_z = transform.position.z + (transform.scale.z / 2);
+    // HACK: this fixes rect y being bs
+    // Bottom right
+    float end_x = transform.position.x + (transform.scale.x / 2);
+    float end_z = transform.position.z - (transform.scale.z / 2);
+
+    std::vector<Cell*> cells_in_transform;
+
+    for (auto cell : cells) {
+        const auto& pos = cell->transform.position;
+        if ((pos.x > start_x && pos.x < end_x)
+         && (pos.z < start_z && pos.z > end_z)) {
+            cells_in_transform.emplace_back(cell);
+        }
+    }
+    return cells_in_transform;
+}
+

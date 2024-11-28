@@ -17,7 +17,7 @@ public:
     PointLight& light = *new PointLight;
     Model capsule_model;
     GameObject& capsule = *new GameObject;
-    Cube& cube = *new Cube;
+    Cube& ground = *new Cube;
     Cube& end_point = *new Cube;
 
     // Path traversal related stuff
@@ -25,10 +25,15 @@ public:
     glm::vec3 capsule_velocity = {};
     std::vector<Cell*> cells;
 
+    std::vector<Cube*> obstacles;
+
     void create_path();
     // TODO: get rid of this later. super hacky
     void clear_path_cells();
     void update_capsule_path();
     void update_capsule_pos();
+
+    // Adds cubes, thats it
+    void handle_input();
 };
 

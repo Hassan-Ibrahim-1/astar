@@ -47,6 +47,8 @@ public:
     std::vector<uint> get_neighbours(Cell* cell);
     // Finds cell based on a provided x and z
     std::optional<Cell*> find_cell(const glm::vec3& position);
+    // finds all the cells that contain this transform 
+    std::vector<Cell*> find_all_cells(const Transform& transform);
 
 private:
     // probably not the best way to do this

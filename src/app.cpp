@@ -50,16 +50,16 @@ void App::init() {
     scene.add_game_object(&capsule);
     /*capsule.hidden = true;*/
 
-    cube.transform.scale = glm::vec3(50, 1, 50);
-    cube.transform.position.y = -2.6;
-    scene.add_primitive(&cube);
+    ground.transform.scale = glm::vec3(50, 1, 50);
+    ground.transform.position.y = -2.6;
+    scene.add_primitive(&ground);
 
     end_point.material.color = Color(0, 255, 0);
     end_point.transform.position = glm::vec3(17, -0.8, 0);
     scene.add_primitive(&end_point);
 
-    grid.boundary.transform = cube.transform;
-    grid.boundary.transform.position.y += cube.transform.scale.y;
+    grid.boundary.transform = ground.transform;
+    grid.boundary.transform.position.y += ground.transform.scale.y;
     // HACK: adding one to z fixes the misalignment between 
     // the grid and the cube. idk why its misaligned in the first
     // place tho
@@ -78,11 +78,13 @@ void App::update() {
     /*grid.boundary.transform.rotation.roll += cos(glfwGetTime());*/
     /*grid.create_cells(ncells);*/
     /*grid.add_to_scene();*/
+    handle_input();
 
     update_capsule_path();
     update_capsule_pos();
 
     if (engine::cursor_enabled) {
+        ImGui::Begin("scene");
         if (utils::imgui_game_object("capsule", capsule)) {
             clear_path_cells();
             LOG("recreating path");
@@ -103,17 +105,32 @@ void App::update() {
 
         utils::imgui_point_light("light", light);
         ImGui::Spacing();
-        utils::imgui_cube("cube", cube);
+        utils::imgui_cube("ground", ground);
         ImGui::Spacing();
         utils::imgui_cube("end", end_point);
-        ImGui::Spacing();
+        ImGui::End();
+
+        ImGui::Begin("obstacles");
+        for (size_t i = 0; i < obstacles.size(); i++) {
+            if (utils::imgui_cube("obstacle " + std::to_string(i), *obstacles[i])) {
+                auto cells = grid.find_all_cells(obstacles[i]->transform);
+                for (auto cell : cells) {
+                    cell->set_fill(true);
+                    cell->traversable = false;
+                    cell->material.color = Color(255);
+                }
+            }
+            ImGui::Spacing();
+        }
+
+        ImGui::End();
 
         return;
 
         // left click to highlight, right click to remove
         if (input::mouse_button_down(MouseButton::ANY)) {
             for (auto cell : grid.cells) {
-                if (utils::mouse_in_rect(*cell)) {
+                if (utils::point_in_rect(*cell, mp)) {
                     if (input::mouse_button_down(MouseButton::LEFT)) {
                         clear_path_cells();
                         target_cell->set_fill(false);
@@ -168,7 +185,10 @@ void App::create_path() {
     target_cell->material.color = Color(0, 255, 0);
 
     auto tmp = path.trace(start_cell, target_cell, grid);
-    ASSERT(tmp.has_value(), "no path found");
+    if (!tmp.has_value()) {
+        LOG("no path found");
+        return;
+    }
     cells = tmp.value();
     current_cell = 0;
     capsule_velocity = {0, 0, 0};
@@ -206,5 +226,12 @@ void App::update_capsule_path() {
 void App::update_capsule_pos() {
     // d = vt
     capsule.transform.position += capsule_velocity * delta_time;
+}
+
+void App::handle_input() {
+    if (input::key_pressed(Key::R)) {
+        obstacles.emplace_back(new Cube);
+        scene.add_primitive(obstacles.back());
+    }
 }
 

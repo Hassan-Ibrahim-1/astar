@@ -80,9 +80,9 @@ bool utils::imgui_rect(const std::string& name, Rect& rect) {
     return edited;
 }
 
-void utils::imgui_cube(const std::string& name, Cube& cube) {
+bool utils::imgui_cube(const std::string& name, Cube& cube) {
     imgui_color_edit3(name + " color", cube.material.color);
-    imgui_transform(name, cube.transform);
+    return imgui_transform(name, cube.transform);
 }
 
 void utils::imgui_sphere(const std::string& name, Sphere& sphere) {
