@@ -80,8 +80,10 @@ void App::update() {
     /*grid.add_to_scene();*/
     handle_input();
 
-    update_capsule_path();
-    update_capsule_pos();
+    if (!cells.empty()) {
+        update_capsule_pos();
+        update_capsule_path();
+    }
 
     if (engine::cursor_enabled) {
         ImGui::Begin("scene");
@@ -119,6 +121,8 @@ void App::update() {
                     cell->traversable = false;
                     cell->material.color = Color(255);
                 }
+                clear_path_cells();
+                create_path();
             }
             ImGui::Spacing();
         }
@@ -186,7 +190,10 @@ void App::create_path() {
 
     auto tmp = path.trace(start_cell, target_cell, grid);
     if (!tmp.has_value()) {
+        current_cell = 0;
+        capsule_velocity = {0, 0, 0};
         LOG("no path found");
+        cells = {};
         return;
     }
     cells = tmp.value();
