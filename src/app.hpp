@@ -1,3 +1,5 @@
+#include <unordered_map>
+
 #include "engine.hpp"
 #include "path.hpp"
 #include "grid.hpp"
@@ -26,6 +28,7 @@ public:
     std::vector<Cell*> cells;
 
     std::vector<Cube*> obstacles;
+    std::unordered_map<Cube*, std::vector<Cell*>> nontraversable_cells;
 
     void create_path();
     // TODO: get rid of this later. super hacky

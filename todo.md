@@ -92,7 +92,7 @@ not traversable.
 -- find_cell does not work returns cells that are closer to the center
 
 ## NEXT
-add automatic obstacle detection for cubes. should work with scale as well
+-- add automatic obstacle detection for cubes. should work with scale as well
 
 # DO THIS LATER
 FIX ROTATION - use x,y,z instead of yaw pitch and roll

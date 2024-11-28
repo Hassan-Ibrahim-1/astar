@@ -89,7 +89,6 @@ void App::update() {
         ImGui::Begin("scene");
         if (utils::imgui_game_object("capsule", capsule)) {
             clear_path_cells();
-            LOG("recreating path");
             create_path();
             /*grid.add_to_scene();*/
             /*grid.create_cells(ncells);*/
@@ -113,13 +112,30 @@ void App::update() {
         ImGui::End();
 
         ImGui::Begin("obstacles");
+
         for (size_t i = 0; i < obstacles.size(); i++) {
             if (utils::imgui_cube("obstacle " + std::to_string(i), *obstacles[i])) {
-                auto cells = grid.find_all_cells(obstacles[i]->transform);
+                auto obstacle = obstacles[i];
+
+                // Because the obstacle has been changed
+                // remove all previous non traversable cells
+                // associated with the object
+                auto key = nontraversable_cells.find(obstacle);
+                if (key != nontraversable_cells.end()) {
+                    for (auto cell : key->second) {
+                        cell->set_fill(false);
+                        cell->traversable = true;
+                        cell->material.color = Color(255);
+                    }
+                    nontraversable_cells.erase(key);
+                }
+
+                auto cells = grid.find_all_cells(obstacle->transform);
                 for (auto cell : cells) {
                     cell->set_fill(true);
                     cell->traversable = false;
                     cell->material.color = Color(255);
+                    nontraversable_cells[obstacle].push_back(cell);
                 }
                 clear_path_cells();
                 create_path();
@@ -192,7 +208,6 @@ void App::create_path() {
     if (!tmp.has_value()) {
         current_cell = 0;
         capsule_velocity = {0, 0, 0};
-        LOG("no path found");
         cells = {};
         return;
     }
