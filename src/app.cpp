@@ -87,6 +87,8 @@ void App::update() {
             clear_path_cells();
             LOG("recreating path");
             create_path();
+            /*grid.add_to_scene();*/
+            /*grid.create_cells(ncells);*/
         }
         ImGui::Spacing();
 
@@ -147,10 +149,18 @@ void App::create_path() {
     }
 
     start_cell = grid.find_cell(capsule.transform.position).value_or(nullptr);
-    ASSERT(start_cell, "no cell found for capsule");
+    if (start_cell == nullptr) {
+        LOG("no cell found for capsule");
+        return;
+    }
+    /*ASSERT(start_cell, "no cell found for capsule");*/
 
     target_cell = grid.find_cell(end_point.transform.position).value_or(nullptr);
-    ASSERT(target_cell, "no cell found for end point");
+    if (target_cell == nullptr) {
+        LOG("no cell found for end point");
+        return;
+    }
+    /*ASSERT(target_cell, "no cell found for end point");*/
 
     start_cell->set_fill(true);
     start_cell->material.color = Color(0, 0, 255);

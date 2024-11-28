@@ -199,12 +199,12 @@ bool utils::point_in_rect(const Rect& rect, const glm::vec2& p) {
     float start_x = rect.transform.position.x - (rect.transform.scale.x / 2);
     float start_y = rect.transform.position.z + (rect.transform.scale.z / 2);
     // HACK: this fixes rect y being bs
-    start_y *= 2; 
+    /*start_y *= 2; */
     // Bottom right
     float end_x = rect.transform.position.x + (rect.transform.scale.x / 2);
     float end_y = rect.transform.position.z - (rect.transform.scale.z / 2);
     // HACK: this fixes rect y being bs
-    end_y *= 2;
+    /*end_y *= 2;*/
 
     return 
         (p.x > start_x && p.x < end_x)
