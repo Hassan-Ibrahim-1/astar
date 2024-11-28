@@ -209,9 +209,11 @@ void App::update_capsule_path() {
         capsule_velocity = {0, 0, 0};
         return;
     }
-    else if (actual_cell != cells[current_cell]) {
+    else if (actual_cell == cells[current_cell]
+          && current_cell + 1 < cells.size()) {
         // What
-        current_cell = current_cell++;
+        /*current_cell = current_cell++;*/
+        current_cell++;
     }
     Cell& cell = *cells[current_cell];
     auto cell_pos = cell.transform.position;

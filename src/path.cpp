@@ -88,6 +88,7 @@ std::optional<std::vector<Cell*>> Path::trace(Cell* start_cell, Cell* target_cel
         path.emplace_back(cell);
         index = node.parent_index;
     }
+    std::reverse(path.begin(), path.end());
     return path;
 }
 
