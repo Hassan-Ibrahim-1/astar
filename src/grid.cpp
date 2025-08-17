@@ -68,7 +68,8 @@ void Grid::create_cells(uint ncells) {
 }
 
 void Grid::add_to_scene() {
-    for (auto& cell : cells) {
+    for (auto cell : cells) {
+        cell->hidden = true;
         _scene.add_primitive(cell);
     }
     /*_scene.add_primitive(&boundary);*/

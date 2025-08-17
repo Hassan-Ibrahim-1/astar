@@ -13,20 +13,31 @@
 #define MAX_RENDERBUFFER_ATTACHMENTS 7
 
 // NOTE: just provide width / height
-// Automatically multiplied by 2 because of macos
+// HACK: width and height is multiplied by 2 because of macos
+
+/*
+ * To create a framebuffer
+ * First call the Framebuffer(width, height) constructor,
+ * then call create_color_attachment and create_rbo_attachment
+ * then call is_complete
+*/
+
 struct ColorAttachmentCreateInfo {
+    // GL_RGB, etc
+    // TODO: this should have a custom enum class
     int format;
     int type = GL_UNSIGNED_BYTE;
     int min_texture_filter = GL_LINEAR;
     int mag_texture_filter = GL_LINEAR;
 };
 
-struct RenderbufferAttachmentCreateInfo {
+struct RenderbufferCreateInfo {
     int format = GL_DEPTH24_STENCIL8;
 };
 
 class Framebuffer {
 public:
+    Framebuffer() {}
     Framebuffer(uint width, uint height);
     ~Framebuffer();
 
@@ -37,13 +48,15 @@ public:
     uint height() const;
     uint id();
 
-    const std::array<uint, MAX_COLOR_ATTACHMENTS>& color_attachments();
-    const std::array<uint, MAX_RENDERBUFFER_ATTACHMENTS>& renderbuffer_attachments();
-    uint n_used_color_attachments() const;
-    uint n_used_renderbuffer_attachments() const;
+    const std::array<uint, MAX_COLOR_ATTACHMENTS>& get_color_attachments();
+    const std::array<uint, MAX_RENDERBUFFER_ATTACHMENTS>& get_rbo_attachments();
+    uint get_color_attachment_by_index(size_t index);
+    uint get_rbo_attachment_by_index(size_t index);
+    uint color_attachments_count() const;
+    uint rbo_attachments_count() const;
 
     void create_color_attachment(const ColorAttachmentCreateInfo& cinfo);
-    void create_render_buffer_attachment(const RenderbufferAttachmentCreateInfo& cinfo);
+    void create_rbo_attachment(const RenderbufferCreateInfo& cinfo);
     bool is_complete() const;
 
 private:

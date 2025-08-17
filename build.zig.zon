@@ -1,0 +1,20 @@
+.{
+    .name = .astar,
+
+    .version = "0.0.0",
+
+    .dependencies = .{
+        .cimgui = .{
+            .url = "git+https://github.com/Hassan-Ibrahim-1/dcimgui#bb09cd42acf93a8d6afe26c63ddb38821231f645",
+            .hash = "cimgui-0.1.0-44ClkXMDSABZE62kZoDX4E40fA8M604vSp5QyS0kfMW_",
+        },
+    },
+
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+
+    .fingerprint = 0x8aef2ce847461e80,
+}

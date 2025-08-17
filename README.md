@@ -2,9 +2,6 @@
 
 ![alt text](https://github.com/Hassan-Ibrahim-1/astar/blob/master/examples/demo.png)
 
-## Build
-First cd into dependencies/assimp and follow the Build.md to build assimp
-
-Go back into the project directory and then just run make or make run
-
-Should hopefully just build on an M-series mac
+## Build instructions
+Make sure you have zig 0.14, assimp, glfw, glm and libjpeg installed on your system
+and then run `zig build run`

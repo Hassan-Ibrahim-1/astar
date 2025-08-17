@@ -1,15 +1,13 @@
 #pragma once
 
 #include <string>
-
 #include <GLFW/glfw3.h>
-
 #include "common.hpp"
 
 class Window {
 public:
     Window();
-    Window(uint width, uint height, const std::string& title);
+    Window(uint width, uint height, const std::string& title, bool enable_msaa = false);
     ~Window();
     
     uint width() const;
